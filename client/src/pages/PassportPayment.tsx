@@ -48,9 +48,9 @@ export default function PassportPayment() {
     const initPayment = async () => {
       try {
         const txRef = `AC-PASS-${Date.now()}`;
-        const redirectUrl = `${window.location.origin}/passport-success`; // Flutterwave will redirect back here
+        const redirectUrl = `${window.location.origin}/passport-success`; // Paystack will redirect back here
 
-        const response = await fetch(`${API_BASE_URL}/api/init-flutterwave`, {
+        const response = await fetch(`${API_BASE_URL}/api/init-paystack`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -72,16 +72,16 @@ export default function PassportPayment() {
         }
 
         const data = await response.json();
-        const link = data.link as string | undefined;
+        const authorizationUrl = data.authorization_url as string | undefined;
 
-        if (!link) {
-          throw new Error("Payment link not returned by server");
+        if (!authorizationUrl) {
+          throw new Error("Payment authorization URL not returned by server");
         }
 
-        // Redirect user to Flutterwave hosted payment page
-        window.location.href = link;
+        // Redirect user to Paystack hosted payment page
+        window.location.href = authorizationUrl;
       } catch (error) {
-        console.error("Flutterwave init error", error);
+        console.error("Paystack init error", error);
         setIsPaying(false);
         toast({
           title: "Payment Error",
@@ -105,7 +105,7 @@ export default function PassportPayment() {
           <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-primary">Passport Express</p>
           <h1 className="font-serif text-3xl md:text-4xl font-bold">Complete Payment</h1>
           <p className="text-sm md:text-base text-muted-foreground">
-            Review your order details and pay securely via Flutterwave.
+            Review your order details and pay securely via Paystack.
           </p>
         </div>
 
@@ -150,7 +150,7 @@ export default function PassportPayment() {
                 onClick={handlePay}
                 disabled={isPaying}
               >
-                {isPaying ? "Processing..." : "Pay with Flutterwave"}
+                {isPaying ? "Processing..." : "Pay with Paystack"}
               </Button>
               <Button
                 type="button"

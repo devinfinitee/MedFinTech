@@ -13,17 +13,17 @@ export default function AirCambridgeLogo({
   return (
     <div
       className={cn(
-        "flex items-center md:flex-col md:items-center gap-0 md:gap-2 flex-shrink max-w-full",
+        "flex items-center md:flex-col md:items-center gap-0 md:gap-1 flex-shrink max-w-full overflow-hidden",
         className
       )}
     >
       <img
         src={brandLogo}
         alt="AirCambridge"
-        className="h-7 sm:h-8 md:h-12 w-auto object-contain max-w-[70vw] sm:max-w-[160px] md:max-w-none"
+        className="h-6 sm:h-7 md:h-10 lg:h-12 w-auto object-contain max-w-[60vw] sm:max-w-[140px] md:max-w-[180px] lg:max-w-none"
       />
       {showTagline && (
-        <span className="hidden md:block text-xs uppercase tracking-[0.35em] text-white/70 whitespace-nowrap">
+        <span className="hidden lg:block text-[10px] xl:text-xs uppercase tracking-[0.3em] text-white/70 whitespace-nowrap leading-none">
           Seamless travel & mobility
         </span>
       )}

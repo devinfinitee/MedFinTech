@@ -49,8 +49,8 @@ export default function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 gap-2 md:gap-4">
-          <Link href="/" data-testid="link-home" className="flex items-center min-w-0 flex-shrink overflow-hidden pr-2">
+        <div className="flex items-center justify-between h-16 sm:h-18 md:h-22 lg:h-24 gap-2 md:gap-4">
+          <Link href="/" data-testid="link-home" className="flex items-center min-w-0 flex-shrink overflow-hidden pr-2 py-2">
             <AirCambridgeLogo
               showTagline
               className={`transition-all duration-400 ease-out will-change-transform

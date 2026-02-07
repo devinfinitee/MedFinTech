@@ -119,7 +119,7 @@ export default function Home() {
     <div className="min-h-screen">
       <HeroSlider />
 
-      <div className="px-4 md:px-6 lg:px-8 pb-16 md:pb-24">
+      <div className="px-4 md:px-6 lg:px-8 pb-16 md:pb-24 pt-20 sm:pt-22 md:pt-26 lg:pt-28">
         <QuickBookingWidget />
 
         <section ref={(el) => (sectionRefs.current[0] = el)} className="max-w-7xl mx-auto mt-20 md:mt-24">

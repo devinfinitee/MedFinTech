@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { formatCurrency } from "@/lib/locations";
 import { openWhatsApp } from "@/lib/emailjs";
+import { CreditCard, MessageCircle } from "lucide-react";
 
 const PASSPORT_PRICING_NGN: Record<string, number> = {
   "5-32": 100000,
@@ -25,6 +27,7 @@ export default function PassportBooking() {
   const [duration, setDuration] = useState<"5" | "10" | "">("");
   const [pages, setPages] = useState<"32" | "64" | "">("");
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const getSelectedKey = () => {
     if (!duration || !pages) return null;
@@ -70,6 +73,43 @@ export default function PassportBooking() {
       `Total to pay: ${formatCurrency(total, "NGN")}`;
 
     openWhatsApp(message);
+  };
+
+  const handlePayNow = () => {
+    if (!fullName || !email || !phone || !dateOfBirth || !duration || !pages) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill all required fields before proceeding to payment.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { base, total } = getPricing();
+    if (!base || !total) {
+      toast({
+        title: "Invalid Selection",
+        description: "Please select a valid passport option.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Store order data in session storage for payment page
+    const orderData = {
+      fullName,
+      email,
+      phone,
+      dateOfBirth,
+      duration,
+      pages,
+      base,
+      fastTrackFee: PASSPORT_FAST_TRACK_FEE_NGN,
+      total,
+    };
+
+    sessionStorage.setItem("aircambridge-passport-order", JSON.stringify(orderData));
+    setLocation("/passport-payment");
   };
 
   const { base, total } = getPricing();
@@ -187,14 +227,28 @@ export default function PassportBooking() {
               )}
             </div>
 
-            <Button
-              type="button"
-              size="lg"
-              className="w-full md:w-auto"
-              onClick={handleWhatsAppOrder}
-            >
-              Order Passport via WhatsApp
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                type="button"
+                size="lg"
+                className="w-full sm:flex-1"
+                onClick={handlePayNow}
+                disabled={!base || !total}
+              >
+                <CreditCard className="mr-2" size={20} />
+                Pay Now with Paystack
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                className="w-full sm:flex-1"
+                onClick={handleWhatsAppOrder}
+              >
+                <MessageCircle className="mr-2" size={20} />
+                Order via WhatsApp
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

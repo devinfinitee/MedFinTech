@@ -116,7 +116,7 @@ export default function PassportSuccess() {
 
             <View style={styles.section}>
               <Text style={styles.label}>Payment Details</Text>
-              <Text>Payment method: Flutterwave</Text>
+              <Text>Payment method: Paystack</Text>
               <Text>Currency: NGN</Text>
             </View>
 
@@ -224,7 +224,7 @@ export default function PassportSuccess() {
 
           <div className="space-y-1 text-sm border-t pt-4">
             <p className="font-semibold text-sm">Payment Details</p>
-            <p>Payment method: Flutterwave</p>
+            <p>Payment method: Paystack</p>
             <p>Currency: NGN</p>
           </div>
         </div>

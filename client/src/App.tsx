@@ -24,10 +24,9 @@ function Router() {
       <Route path="/services" component={Services} />
       <Route path="/booking" component={Booking} />
       <Route path="/passport-booking" component={PassportBooking} />
-      {/** Payment and success flows temporarily disabled; passport orders handled via WhatsApp only */}
-      {/** <Route path="/passport-payment" component={PassportPayment} /> */}
-      {/** <Route path="/passport-success" component={PassportSuccess} /> */}
-      {/** <Route path="/passport-success-test" component={PassportSuccessTest} /> */}
+      <Route path="/passport-payment" component={PassportPayment} />
+      <Route path="/passport-success" component={PassportSuccess} />
+      <Route path="/passport-success-test" component={PassportSuccessTest} />
       <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>

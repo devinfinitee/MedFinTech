@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-// Serverless function to initialize a Flutterwave payment
+// Serverless function to initialize a Paystack payment
 // Expects POST body with: { amount, currency, email, phone, name, txRef, redirectUrl }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -8,10 +8,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const secretKey = process.env.FLUTTERWAVE_SECRET_KEY;
+  const secretKey = process.env.PAYSTACK_SECRET_KEY;
 
   if (!secretKey) {
-    return res.status(500).json({ error: "Flutterwave secret key not configured" });
+    return res.status(500).json({ error: "Paystack secret key not configured" });
   }
 
   const { amount, currency, email, phone, name, txRef, redirectUrl } = req.body || {};
@@ -21,44 +21,46 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const flutterwaveRes = await fetch("https://api.flutterwave.com/v3/payments", {
+    const paystackRes = await fetch("https://api.paystack.co/transaction/initialize", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${secretKey}`,
       },
       body: JSON.stringify({
-        tx_ref: txRef,
-        amount,
+        reference: txRef,
+        amount: amount * 100, // Paystack expects amount in kobo
         currency,
-        redirect_url: redirectUrl,
-        customer: {
-          email,
-          phonenumber: phone,
+        callback_url: redirectUrl,
+        email,
+        metadata: {
+          phone,
           name,
-        },
-        // You can adjust these customizations to match your brand
-        customizations: {
-          title: "AirCambridge Passport Express",
-          description: "Nigeria international passport processing",
+          custom_fields: [
+            {
+              display_name: "Service",
+              variable_name: "service",
+              value: "AirCambridge Passport Express"
+            }
+          ]
         },
       }),
     });
 
-    const data = await flutterwaveRes.json();
+    const data = await paystackRes.json();
 
-    if (!flutterwaveRes.ok || data.status !== "success") {
-      console.error("Flutterwave init error", data);
+    if (!paystackRes.ok || !data.status) {
+      console.error("Paystack init error", data);
       return res.status(502).json({ error: "Failed to initialize payment" });
     }
 
     return res.status(200).json({
       status: "success",
-      link: data.data?.link,
-      flutterwaveResponse: data.data,
+      authorization_url: data.data?.authorization_url,
+      paystackResponse: data.data,
     });
   } catch (error) {
-    console.error("Flutterwave API error", error);
+    console.error("Paystack API error", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 }

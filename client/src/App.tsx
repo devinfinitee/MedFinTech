@@ -6,28 +6,28 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Home from "@/pages/Home";
-import About from "@/pages/About";
-import Services from "@/pages/Services";
-import Booking from "@/pages/Booking";
-import PassportBooking from "@/pages/PassportBooking";
-import PassportPayment from "@/pages/PassportPayment";
-import PassportSuccess from "@/pages/PassportSuccess";
-import PassportSuccessTest from "@/pages/PassportSuccessTest";
-import Contact from "@/pages/Contact";
+import Registration from "@/pages/Registration";
+import Ticketing from "@/pages/Ticketing";
+import Accommodation from "@/pages/Accommodation";
+import EventDetails from "@/pages/EventDetails";
+import MedxVerseAppLaunch from "@/pages/MedxVerseAppLaunch";
+import Partnerships from "@/pages/Partnerships";
+import SpecialGuests from "@/pages/SpecialGuests";
+import PaymentSuccess from "@/pages/PaymentSuccess";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/services" component={Services} />
-      <Route path="/booking" component={Booking} />
-      <Route path="/passport-booking" component={PassportBooking} />
-      <Route path="/passport-payment" component={PassportPayment} />
-      <Route path="/passport-success" component={PassportSuccess} />
-      <Route path="/passport-success-test" component={PassportSuccessTest} />
-      <Route path="/contact" component={Contact} />
+      <Route path="/registration" component={Registration} />
+      <Route path="/ticketing" component={Ticketing} />
+      <Route path="/accommodation" component={Accommodation} />
+      <Route path="/event-details" component={EventDetails} />
+      <Route path="/medxverse-launch" component={MedxVerseAppLaunch} />
+      <Route path="/partnerships" component={Partnerships} />
+      <Route path="/special-guests" component={SpecialGuests} />
+      <Route path="/payment-success" component={PaymentSuccess} />
       <Route component={NotFound} />
     </Switch>
   );

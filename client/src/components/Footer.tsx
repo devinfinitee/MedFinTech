@@ -1,30 +1,19 @@
 import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { whatsappConfig, defaultContactEmail } from "@/lib/emailjs";
-import { useState } from "react";
-import AirCambridgeLogo from "@/components/AirCambridgeLogo";
+import MedFintechLogo from "@/components/MedFintechLogo";
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-
-  const handleNewsletterSignup = () => {
-    console.log("Newsletter signup:", email);
-    setEmail("");
-  };
-
   return (
-    <footer className="bg-foreground text-white pt-10 pb-6 animate-in fade-in-50 slide-in-from-bottom-1 duration-700">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <footer className="bg-foreground text-white pt-8 pb-5 animate-in fade-in-50 slide-in-from-bottom-1 duration-700">
+      <div className="w-full px-2 sm:px-3 md:px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <AirCambridgeLogo
-              showTagline
-              className="mb-4 transition-all duration-400 ease-out will-change-transform hover:scale-[1.01]"
+            <MedFintechLogo
+              className="mb-4 scale-[1.8] origin-left"
             />
             <p className="text-white/80 text-sm mb-4">
-              Your trusted partner for seamless air travel, helicopter charters, and global mobility solutions across Africa and the world.
+              Reimagining Healthcare Access Through Financial Innovation. Join us for the official launch of Africa's largest telemedicine platform.
             </p>
             <div className="flex gap-2">
               <button className="hover-elevate active-elevate-2 p-2 rounded" data-testid="button-social-facebook">
@@ -51,23 +40,28 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-white/80 hover:text-primary transition-colors">
-                  About Us
+                <Link href="/registration" className="text-white/80 hover:text-primary transition-colors">
+                  Registration
                 </Link>
               </li>
               <li>
-                <Link href="/booking" className="text-white/80 hover:text-primary transition-colors">
-                  Book Now
+                <Link href="/ticketing" className="text-white/80 hover:text-primary transition-colors">
+                  Ticketing
                 </Link>
               </li>
               <li>
-                <Link href="/passport-booking" className="text-white/80 hover:text-primary transition-colors">
-                  Passport
+                <Link href="/accommodation" className="text-white/80 hover:text-primary transition-colors">
+                  Hotel Accommodation
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-white/80 hover:text-primary transition-colors">
-                  Contact
+                <Link href="/event-details" className="text-white/80 hover:text-primary transition-colors">
+                  Event Details
+                </Link>
+              </li>
+              <li>
+                <Link href="/medxverse-launch" className="text-white/80 hover:text-primary transition-colors">
+                  MedxVerse Launch
                 </Link>
               </li>
             </ul>
@@ -80,30 +74,16 @@ export default function Footer() {
               <li>📞 {whatsappConfig.phoneNumber}</li>
               <li>📧 {defaultContactEmail}</li>
             </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-lg mb-3">Newsletter</h4>
-            <p className="text-sm text-white/80 mb-3">
-              Stay updated with exclusive offers and aviation news.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <Input
-                placeholder="Your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                data-testid="input-newsletter-email"
-              />
-              <Button variant="default" onClick={handleNewsletterSignup} data-testid="button-newsletter-submit">
-                Sign Up
-              </Button>
+            <div className="mt-4">
+              <h5 className="font-semibold text-base mb-2">Event Date</h5>
+              <p className="text-white/80 text-sm">Saturday, 7th March 2026</p>
+              <p className="text-white/80 text-sm">9:00 AM - 4:00 PM WAT</p>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-6 text-center text-xs md:text-sm text-white/60">
-          <p>&copy; 2025 AirCambridge Jet. All rights reserved.</p>
+        <div className="border-t border-white/10 pt-4 text-center text-xs md:text-sm text-white/60">
+          <p>&copy; 2026 MEDFINTECH Conference. All rights reserved.</p>
         </div>
       </div>
     </footer>

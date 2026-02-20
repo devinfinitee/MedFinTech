@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import AirCambridgeLogo from "@/components/AirCambridgeLogo";
+import EventLogo from "@/components/MedFintechLogo";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -34,46 +34,48 @@ export default function Navigation() {
 
   const navLinks = [
     { path: "/", label: "Home" },
-    { path: "/about", label: "About" },
-    { path: "/booking", label: "Services" },
-    { path: "/passport-booking", label: "Passport" },
-    { path: "/contact", label: "Contact" },
+    { path: "/registration", label: "Registration" },
+    { path: "/ticketing", label: "Ticketing" },
+    { path: "/accommodation", label: "Hotel Accommodation" },
+    { path: "/event-details", label: "Event Details" },
+    { path: "/medxverse-launch", label: "MedxVerse Launch" },
+    { path: "/partnerships", label: "Partnerships" },
+    { path: "/special-guests", label: "Special Guests" },
   ];
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 border-b border-white/10 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-[100] border-b border-white/10 transition-all duration-500 ${
         isScrolled 
-          ? "bg-black shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
-          : "bg-black/80 backdrop-blur-xl"
+          ? "bg-slate-900 shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
+          : "bg-slate-900/90 backdrop-blur-xl"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18 md:h-22 lg:h-24 gap-2 md:gap-4">
-          <Link href="/" data-testid="link-home" className="flex items-center min-w-0 flex-shrink overflow-hidden pr-2 py-2">
-            <AirCambridgeLogo
-              showTagline
-              className={`transition-all duration-400 ease-out will-change-transform
+      <div className="w-full px-0">
+        <div className="flex items-center justify-between h-20 md:h-24 px-3 sm:px-4 md:px-6 lg:px-8">
+          <Link href="/" data-testid="link-home" className="flex items-center flex-shrink-0">
+            <EventLogo
+              className={`scale-150 md:scale-[2] lg:scale-[2.2] transition-all duration-400 ease-out will-change-transform
                 ${hasMounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}
-                ${isScrolled ? "md:scale-[0.97]" : "md:scale-100"}
-                hover:scale-[1.01] md:hover:scale-[1.01]
+                ${isScrolled ? "scale-[1.4] md:scale-[1.8] lg:scale-[2]" : ""}
+                hover:scale-[1.6] md:hover:scale-[2.1] lg:hover:scale-[2.3]
               `}
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-3 lg:gap-5 xl:gap-7">
             {navLinks.map((link) => (
               <Link key={link.path} href={link.path} data-testid={`link-${link.label.toLowerCase()}`}>
                 <span
-                  className={`text-sm font-semibold transition-all cursor-pointer relative group ${
+                  className={`text-sm lg:text-base font-semibold transition-all duration-300 cursor-pointer relative group px-1 py-2 ${
                     location === link.path
                       ? "text-primary"
-                      : "text-white hover:text-primary"
+                      : "text-white/90 hover:text-primary"
                   }`}
                 >
                   {link.label}
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all ${
-                    location === link.path ? 'w-full' : 'w-0 group-hover:w-full'
+                  <span className={`absolute -bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 rounded-full ${
+                    location === link.path ? 'w-full shadow-[0_0_8px_rgba(56,180,73,0.6)]' : 'w-0 group-hover:w-full group-hover:shadow-[0_0_8px_rgba(56,180,73,0.6)]'
                   }`}></span>
                 </span>
               </Link>
@@ -82,11 +84,11 @@ export default function Navigation() {
 
           <Button
             variant="default"
-            className="hidden md:inline-flex font-semibold"
-            data-testid="button-book-jet"
+            className="hidden md:inline-flex font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
+            data-testid="button-register-event"
             asChild
           >
-            <Link href="/booking">Request Service</Link>
+            <Link href="/registration">Register Now</Link>
           </Button>
 
           <button
@@ -100,7 +102,7 @@ export default function Navigation() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-black border-t border-white/10 shadow-2xl animate-in slide-in-from-top duration-300">
+        <div className="md:hidden bg-slate-900 border-t border-white/10 shadow-2xl animate-in slide-in-from-top duration-300">
           <div className="px-4 py-6 space-y-4">
             {navLinks.map((link) => (
               <Link key={link.path} href={link.path}>
@@ -117,8 +119,8 @@ export default function Navigation() {
               </Link>
             ))}
             <Button variant="default" className="w-full font-semibold" size="lg" asChild>
-              <Link href="/booking" onClick={() => setIsMobileMenuOpen(false)}>
-                Request Service
+              <Link href="/registration" onClick={() => setIsMobileMenuOpen(false)}>
+                Register Now
               </Link>
             </Button>
           </div>

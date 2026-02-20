@@ -13,7 +13,7 @@ export const whatsappConfig = {
 };
 
 // Default site-wide contact email
-export const defaultContactEmail = 'aircambridgee@gmail.com';
+export const defaultContactEmail = 'medfintech@gmail.com';
 
 // Helper function to open WhatsApp chat
 export const openWhatsApp = (message?: string) => {

@@ -5,7 +5,7 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   // Ensure image files (including uppercase extensions) are treated as assets
-  assetsInclude: ["**/*.jpg", "**/*.JPG", "**/*.jpeg", "**/*.png"],
+  assetsInclude: ["**/*.jpg", "**/*.JPG", "**/*.jpeg", "**/*.png", "**/*.PNG", "**/*.svg", "**/*.gif", "**/*.webp"],
   // Load environment variables from the project root
   envDir: path.resolve(import.meta.dirname),
   resolve: {
@@ -29,7 +29,7 @@ export default defineConfig({
           gsap: ['gsap'],
         },
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name && /\.(jpg|jpeg|png|gif|svg|webp)$/.test(assetInfo.name)) {
+          if (assetInfo.name && /\.(jpg|jpeg|png|gif|svg|webp|JPG|JPEG|PNG|GIF|SVG|WEBP)$/i.test(assetInfo.name)) {
             return 'assets/images/[name]-[hash][extname]';
           }
           return 'assets/[name]-[hash][extname]';

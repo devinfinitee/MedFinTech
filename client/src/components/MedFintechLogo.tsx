@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import logo from "@/assets/medfintech-logo.png";
+import logo from "@/assets/brand-logo-footer.png";
 
 interface EventLogoProps {
   className?: string;

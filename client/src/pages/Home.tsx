@@ -1,13 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect } from "react";
 import img1 from "@/assets/img-1.jpg";
 import img2 from "@/assets/img-2.jpg";
 import img3 from "@/assets/img-3.jpg";
+import amosImage from "@/assets/amos-franklin.jpg";
+import zainabImage from "@/assets/zainab-abdulsalam.JPG";
+import amooImage from "@/assets/amoo-yetunde.jpg";
+import boluwatifeImage from "@/assets/boluwatife-agboola.JPG";
+import ayodejiImage from "@/assets/ayodeji-adelabu.jpg";
+import obaGhandiImage from "@/assets/oba-ghandi.JPG";
+import adeyeyeImage from "@/assets/adeyeye-enitan.JPG";
+import sundayOladapoImage from "@/assets/sunday-oladapo.JPG";
 import {
   Calendar,
   MapPin,
@@ -22,334 +26,25 @@ import {
   Zap,
   Heart,
   Rocket,
-  Play,
-  Star,
+  ArrowRight,
+  CheckCircle,
 } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function Home() {
-  const heroRef = useRef(null);
-  const featuresRef = useRef(null);
-  const launchRef = useRef(null);
-  const speakersRef = useRef(null);
-  const expectRef = useRef(null);
-  const royalRef = useRef(null);
-
   useEffect(() => {
-    // Refresh ScrollTrigger on mount
-    ScrollTrigger.refresh();
-
-    // Additional refresh after content loads
-    const refreshTimer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 500);
-
-    // Hero section animations - with safety checks
-    const ctx = gsap.context(() => {
-      
-      // Only animate if elements exist
-      if (document.querySelector(".hero-badge")) {
-        gsap.from(".hero-badge", {
-          y: -30,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.2,
-          ease: "power2.out",
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+            observer.unobserve(entry.target);
+          }
         });
-      }
-
-      if (document.querySelector(".hero-title")) {
-        gsap.from(".hero-title", {
-          y: 40,
-          opacity: 0,
-          duration: 1,
-          delay: 0.4,
-          ease: "power2.out",
-        });
-      }
-
-      if (document.querySelector(".hero-subtitle")) {
-        gsap.from(".hero-subtitle", {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          delay: 0.6,
-          ease: "power2.out",
-        });
-      }
-
-      if (document.querySelector(".hero-buttons")) {
-        gsap.from(".hero-buttons", {
-          scale: 0.9,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.8,
-          ease: "back.out(1.4)",
-        });
-      }
-
-      if (document.querySelector(".hero-detail")) {
-        gsap.from(".hero-detail", {
-          y: 20,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.15,
-          delay: 1,
-          ease: "power2.out",
-        });
-      }
-
-      // Background parallax effect - subtle and smooth
-      if (document.querySelector(".hero-bg")) {
-        gsap.to(".hero-bg", {
-          yPercent: 20,
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }
-
-      // Feature section title animation
-      if (document.querySelector(".features-title")) {
-        gsap.from(".features-title", {
-          scrollTrigger: {
-            trigger: featuresRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        });
-      }
-
-      // Feature cards scroll animation - fast and responsive
-      if (document.querySelector(".feature-card")) {
-        gsap.from(".feature-card", {
-          scrollTrigger: {
-            trigger: featuresRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 30,
-          opacity: 0,
-          duration: 0.4,
-          stagger: 0.06,
-          ease: "power1.out",
-        });
-      }
-
-      // MedxVerse launch section animations - synchronized
-      if (document.querySelector(".launch-badge")) {
-        gsap.from(".launch-badge", {
-          scrollTrigger: {
-            trigger: launchRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          scale: 0.5,
-          rotation: 180,
-          opacity: 0,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-        });
-      }
-
-      if (document.querySelector(".launch-title")) {
-        gsap.from(".launch-title", {
-          scrollTrigger: {
-            trigger: launchRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 40,
-          opacity: 0,
-          duration: 0.7,
-          ease: "power2.out",
-        });
-      }
-
-      if (document.querySelector(".launch-feature")) {
-        gsap.from(".launch-feature", {
-          scrollTrigger: {
-            trigger: launchRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 30,
-          opacity: 0,
-          duration: 0.4,
-          stagger: 0.06,
-          ease: "power1.out",
-        });
-      }
-
-      // Floating animation for background circles - smooth and subtle
-      if (document.querySelector(".float-circle")) {
-        gsap.to(".float-circle", {
-          y: "+=20",
-          x: "+=15",
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          stagger: {
-            each: 0.5,
-            from: "random",
-          },
-        });
-      }
-
-      // Speaker cards animation
-      if (document.querySelector(".speaker-card")) {
-        gsap.from(".speaker-card", {
-          scrollTrigger: {
-            trigger: speakersRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 40,
-          opacity: 0,
-          scale: 0.95,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: "power2.out",
-        });
-      }
-
-      // Add continuous pulse animation to primary buttons
-      if (document.querySelector(".pulse-button")) {
-        gsap.to(".pulse-button", {
-          boxShadow: "0 0 20px rgba(56, 180, 73, 0.6)",
-          duration: 1.5,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-      }
-
-      // What to Expect section animations
-      if (document.querySelector(".expect-title")) {
-        gsap.from(".expect-title", {
-          scrollTrigger: {
-            trigger: expectRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        });
-      }
-
-      if (document.querySelector(".expect-card")) {
-        gsap.from(".expect-card", {
-          scrollTrigger: {
-            trigger: expectRef.current,
-            start: "top 75%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 40,
-          opacity: 0,
-          scale: 0.95,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: "power2.out",
-        });
-      }
-
-      // Royal Fathers section animations
-      if (document.querySelector(".royal-title")) {
-        gsap.from(".royal-title", {
-          scrollTrigger: {
-            trigger: royalRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        });
-      }
-
-      if (document.querySelector(".royal-card")) {
-        gsap.from(".royal-card", {
-          scrollTrigger: {
-            trigger: royalRef.current,
-            start: "top 75%",
-            toggleActions: "play none none none",
-            markers: false,
-          },
-          y: 40,
-          opacity: 0,
-          scale: 0.95,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
-        });
-      }
-
-      // Parallax effect for background images
-      const bgImages = document.querySelectorAll(".parallax-img");
-      bgImages.forEach((img) => {
-        gsap.to(img, {
-          yPercent: 30,
-          ease: "none",
-          scrollTrigger: {
-            trigger: img,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
-      });
-
-      // Add gentle hover effect animation for cards
-      document.querySelectorAll(".animate-card").forEach((card) => {
-        card.addEventListener("mouseenter", () => {
-          gsap.to(card, {
-            y: -8,
-            boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-        
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, {
-            y: 0,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.12)",
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-      });
-
-    }, heroRef);
-
-    return () => {
-      clearTimeout(refreshTimer);
-      ctx.revert();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+      },
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll(".fade-up, .scroll-animate, .slide-left, .slide-right, .scale-in").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   const features = [
@@ -376,383 +71,372 @@ export default function Home() {
   ];
 
   const speakers = [
-    { name: "Amos Franklin Momodu", title: "CEO, MedxVerse" },
-    { name: "Dr. Zainab Abdulsalam", title: "Medical Doctor & Digital Health Strategist" },
-    { name: "Boluwatife Agboola", title: "CEO, Torchlife Africa" },
-    { name: "Amoo Yetunde Ololade", title: "Global Health Nurse" },
-    { name: "Adelabu Ayodeji Adetunji", title: "SME Growth Lead, Flutterwave" },
-    { name: "Olushola Adeoye", title: "CEO, CallMate AI" },
+    { name: "Amos Franklin Momodu", title: "CEO, MedxVerse", image: amosImage },
+    { name: "Dr. Zainab Abdulsalam", title: "Medical Doctor & Digital Health Strategist", image: zainabImage },
+    { name: "Boluwatife Agboola", title: "CEO, Torchlife Africa", image: boluwatifeImage },
+    { name: "Amoo Yetunde Ololade", title: "Global Health Nurse", image: amooImage },
+    { name: "Adelabu Ayodeji Adetunji", title: "SME Growth Lead, Flutterwave", image: ayodejiImage },
+  ];
+
+  const royalFathers = [
+    {
+      title: "His Imperial Majesty",
+      name: "Oba Adeyeye Enitan Babatunde Ogunwusi",
+      role: "Ojaja II — The Ooni of Ife",
+      image: adeyeyeImage,
+    },
+    {
+      title: "His Imperial Majesty",
+      name: "Oba Ghandi Afolabi Oladunni Olaoye",
+      role: "Orumogege III — The Soun of Ogbomoso",
+      image: obaGhandiImage,
+    },
+    {
+      title: "His Royal Majesty",
+      name: "Oba Sunday Oladapo Oyediran",
+      role: "Lagbami Osekun III",
+      image: sundayOladapoImage,
+    },
+  ];
+
+  const expectations = [
+    { icon: Globe, title: "Platform Launch", desc: "Official launch of Africa's largest telemedicine platform" },
+    { icon: Heart, title: "HealthTech Insights", desc: "Latest trends in digital health and AI applications" },
+    { icon: Zap, title: "Startup Growth", desc: "Investment strategies and scaling healthcare startups" },
+    { icon: Users, title: "Networking", desc: "Connect with healthcare professionals and fintech leaders" },
+    { icon: Shield, title: "Policy Insights", desc: "Healthcare policy transformation and regulatory updates" },
+    { icon: Award, title: "Certificate", desc: "Certificate of participation for all registered attendees" },
   ];
 
   return (
-    <div className="min-h-screen" ref={heroRef}>
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pt-28 md:pt-32 pb-20 relative overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0 hero-bg">
-          <img 
-            src={img1} 
-            alt="MEDFINTECH Conference" 
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-slate-800/70 to-slate-900/80"></div>
+      <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white pt-28 md:pt-36 pb-24 overflow-hidden">
+        {/* Background image overlay */}
+        <div className="absolute inset-0 z-0">
+          <img src={img1} alt="MEDFINTECH Conference" className="w-full h-full object-cover opacity-15" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-slate-950/90" />
         </div>
-        
+
+        {/* Decorative circles */}
+        <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="hero-badge mb-6 bg-primary text-white text-lg px-4 py-2" variant="secondary">
-              Saturday, 7th March 2026
-            </Badge>
-            <h1 className="hero-title text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              MEDFINTECH
+            {/* Live event pill */}
+            <div className="fade-up flex justify-center mb-6">
+              <span className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 text-primary-foreground text-sm font-semibold px-5 py-2 rounded-full backdrop-blur-sm">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                Saturday, 7th March 2026 • Ogbomoso, Nigeria
+              </span>
+            </div>
+
+            <h1 className="fade-up text-5xl md:text-7xl font-extrabold mb-5 leading-tight tracking-tight">
+              MedFinTech
               <br />
-              <span className="text-primary">CONFERENCE 2026</span>
+              <span className="text-primary">Conference 2026</span>
             </h1>
-            <p className="hero-subtitle text-xl md:text-2xl mb-4 text-slate-300">
+            <p className="fade-up text-xl md:text-2xl mb-3 text-slate-200 font-medium">
               Official Launch of Africa's Largest Telemedicine Platform
             </p>
-            <p className="hero-subtitle text-lg mb-8 text-slate-400 max-w-2xl mx-auto">
+            <p className="fade-up text-base md:text-lg mb-10 text-slate-400 max-w-2xl mx-auto leading-relaxed">
               Reimagining Healthcare Access Through Financial Innovation
             </p>
-            
-            <div className="hero-buttons flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button size="lg" className="pulse-button text-lg px-8 py-3 shadow-xl hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105" asChild>
-                <Link href="/registration">Register Now</Link>
+
+            {/* CTA buttons */}
+            <div className="fade-up flex flex-col sm:flex-row gap-4 justify-center mb-14">
+              <Button size="lg" className="text-base px-8 py-3 shadow-xl hover:shadow-primary/30 hover:scale-105 transition-all duration-300" asChild>
+                <Link href="/registration">
+                  Register Now <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-slate-900 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105" asChild>
+              <Button size="lg" variant="outline" className="text-base px-8 py-3 border-white/40 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 hover:scale-105" asChild>
                 <Link href="/event-details">View Schedule</Link>
               </Button>
             </div>
 
-            {/* Event Details */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              <div className="hero-detail flex items-center justify-center space-x-3 hover:scale-105 transition-transform">
-                <Calendar className="w-6 h-6 text-primary" />
-                <div className="text-left">
-                  <div className="font-semibold">Date</div>
-                  <div className="text-slate-400">March 7, 2026</div>
+            {/* Event info pills */}
+            <div className="fade-up flex flex-wrap justify-center gap-4">
+              {[
+                { icon: Calendar, label: "March 7, 2026" },
+                { icon: Clock,    label: "9:00 AM – 4:00 PM" },
+                { icon: MapPin,   label: "The Assembly, Ogbomoso" },
+                { icon: Users,    label: "500+ Attendees Expected" },
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="flex items-center gap-2 bg-white/8 border border-white/15 rounded-full px-5 py-2.5 text-sm text-slate-200 backdrop-blur-sm hover:bg-white/12 transition-colors">
+                  <Icon className="w-4 h-4 text-primary flex-shrink-0" />
+                  {label}
                 </div>
-              </div>
-              <div className="hero-detail flex items-center justify-center space-x-3 hover:scale-105 transition-transform">
-                <Clock className="w-6 h-6 text-primary" />
-                <div className="text-left">
-                  <div className="font-semibold">Time</div>
-                  <div className="text-slate-400">9:00 AM - 4:00 PM</div>
-                </div>
-              </div>
-              <div className="hero-detail flex items-center justify-center space-x-3 hover:scale-105 transition-transform">
-                <MapPin className="w-6 h-6 text-primary" />
-                <div className="text-left">
-                  <div className="font-semibold">Venue</div>
-                  <div className="text-slate-400">The Assembly, Ogbomoso</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-20 bg-slate-50" ref={featuresRef}>
+      {/* About / Features Section */}
+      <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-4">
-          <div className="features-title text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">About the Conference</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              MEDFINTECH Conference 2026 is a landmark gathering designed to redefine healthcare delivery 
-              through technology, financial inclusion, and strategic collaboration.
+          <div className="scroll-animate text-center mb-16">
+            <span className="inline-block text-primary font-semibold text-sm uppercase tracking-widest mb-3">About the Conference</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-5 text-slate-900">Why MEDFINTECH 2026?</h2>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              A landmark gathering designed to redefine healthcare delivery through technology,
+              financial inclusion, and strategic collaboration across Africa.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <Card key={index} className="feature-card animate-card group text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:scale-105">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/50 group-hover:rotate-12">
-                    <feature.icon className="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-12" />
-                  </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{feature.description}</p>
-                </CardContent>
-              </Card>
+              <div
+                key={index}
+                className={`scroll-animate stagger-${index + 1} bg-white rounded-2xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-slate-100`}
+              >
+                <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <feature.icon className="w-7 h-7 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold mb-2 text-slate-900">{feature.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{feature.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* MedxVerse App Launch Highlight */}
-      <section className="py-20 bg-gradient-to-br from-primary via-primary to-green-600 text-white relative overflow-hidden" ref={launchRef}>
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="float-circle absolute top-10 left-10 w-32 h-32 border border-white/20 rounded-full"></div>
-          <div className="float-circle absolute top-32 right-20 w-24 h-24 border border-white/20 rounded-full"></div>
-          <div className="float-circle absolute bottom-20 left-1/4 w-16 h-16 border border-white/20 rounded-full"></div>
+
+      {/* Conference Photo Strip */}
+      <div className="relative h-64 md:h-80 overflow-hidden">
+        <img src={img2} alt="MEDFINTECH Conference" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 via-slate-900/30 to-slate-900/70 flex items-center justify-center">
+          <div className="text-center text-white px-4">
+            <p className="text-sm uppercase tracking-widest text-primary font-semibold mb-2">MEDFINTECH 2026</p>
+            <h3 className="text-2xl md:text-4xl font-extrabold">Africa's Healthcare Revolution Starts Here</h3>
+          </div>
         </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            {/* Launch Badge */}
-            <div className="flex justify-center mb-8">
-              <div className="relative">
-                <Badge className="launch-badge bg-white text-primary text-lg px-6 py-3 font-bold">
-                  🚀 HISTORIC LAUNCH EVENT
-                </Badge>
-                <div className="absolute -top-2 -right-2">
-                  <Star className="w-8 h-8 text-yellow-300 animate-bounce" />
-                </div>
-              </div>
-            </div>
+      </div>
 
-            <h2 className="launch-title text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
-              MedxVerse App
-              <br />
-              <span className="text-yellow-300">Official Launch</span>
-            </h2>
-            
-            <p className="text-xl md:text-2xl mb-6 text-green-100 font-medium">
-              Africa's Largest Telemedicine Platform Goes Live
-            </p>
-            
-            <p className="text-lg mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Witness history in the making as we officially unveil MedxVerse — a revolutionary telemedicine 
-              platform designed to transform healthcare access across Nigeria and Africa. This is more than 
-              an app launch; it's the beginning of a healthcare revolution.
-            </p>
+      {/* MedxVerse App Launch Highlight */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="scale-in bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl overflow-hidden relative">
+            {/* glow accents */}
+            <div className="absolute top-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/15 rounded-full blur-3xl translate-x-1/3 translate-y-1/3 pointer-events-none" />
 
-            {/* Key Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              <div className="launch-feature bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-                <Smartphone className="w-12 h-12 text-yellow-300 mx-auto mb-4 transition-transform duration-300 hover:rotate-12" />
-                <h3 className="text-xl font-bold mb-2">24/7 Teleconsultation</h3>
-                <p className="text-white/80">Connect with licensed medical professionals anytime, anywhere</p>
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2">
+              {/* Left: Content */}
+              <div className="p-10 md:p-14 flex flex-col justify-center">
+              {/* badge */}
+              <div className="flex mb-8">
+                <span className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 text-white text-sm font-bold px-5 py-2.5 rounded-full">
+                  <Rocket className="w-4 h-4 text-primary" />
+                  HISTORIC LAUNCH EVENT
+                </span>
               </div>
-              
-              <div className="launch-feature bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-                <Zap className="w-12 h-12 text-yellow-300 mx-auto mb-4 transition-transform duration-300 hover:rotate-12" />
-                <h3 className="text-xl font-bold mb-2">AI Health Assistant</h3>
-                <p className="text-white/80">Lexi AI provides instant symptom checking and health guidance</p>
-              </div>
-              
-              <div className="launch-feature bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-                <Shield className="w-12 h-12 text-yellow-300 mx-auto mb-4 transition-transform duration-300 hover:rotate-12" />
-                <h3 className="text-xl font-bold mb-2">Integrated Payments</h3>
-                <p className="text-white/80">Seamless insurance and digital payment integration</p>
-              </div>
-            </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
-              <Button 
-                size="lg" 
-                className="bg-white text-primary hover:bg-gray-100 text-lg px-8 py-4 font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110"
-                asChild
-              >
-                <Link href="/medxverse-launch">
-                  <Rocket className="w-6 h-6 mr-2" />
-                  Experience the Launch
-                </Link>
-              </Button>
-              
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4 font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110"
-                asChild
-              >
-                <Link href="/registration">
-                  <Play className="w-6 h-6 mr-2" />
-                  Watch Live Demo
-                </Link>
-              </Button>
-            </div>
+              <div className="mb-10">
+                <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-tight">
+                  MedxVerse App
+                  <br />
+                  <span className="text-primary">Official Launch</span>
+                </h2>
+                <p className="text-slate-300 text-base leading-relaxed">
+                  Witness history as we unveil Africa's largest telemedicine platform — designed to
+                  transform healthcare access across Nigeria and Africa. Connect with licensed doctors,
+                  get AI-powered health guidance, and pay seamlessly with integrated fintech tools.
+                </p>
+              </div>
 
-            {/* Countdown or Status */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl py-4 px-8 inline-block">
-              <p className="text-lg font-semibold">
-                🎯 Live demonstration at the conference • March 7, 2026
+              {/* Feature tiles */}
+              <div className="space-y-4 mb-10">
+                {[
+                  { icon: Smartphone, title: "24/7 Teleconsultation", desc: "Connect with licensed medical professionals anytime, anywhere" },
+                  { icon: Zap,        title: "Lexi AI Assistant",     desc: "Instant symptom checking and personalised health guidance" },
+                  { icon: Shield,     title: "Integrated Payments",   desc: "Seamless insurance and digital payment integration" },
+                ].map(({ icon: Icon, title, desc }) => (
+                  <div key={title} className="flex items-start gap-4 bg-white/8 border border-white/10 rounded-xl p-4 hover:bg-white/12 transition-all duration-300">
+                    <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-sm mb-0.5">{title}</h3>
+                      <p className="text-slate-400 text-xs leading-relaxed">{desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-base px-8 py-3 font-semibold shadow-lg hover:scale-105 transition-all duration-300" asChild>
+                  <Link href="/medxverse-launch">
+                    <Rocket className="w-5 h-5 mr-2" />
+                    Experience the Launch
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white hover:text-slate-900 text-base px-8 py-3 font-semibold transition-all duration-300 hover:scale-105" asChild>
+                  <Link href="/registration">Register to Attend</Link>
+                </Button>
+              </div>
+
+              <p className="text-slate-500 text-sm mt-5">
+                🎯 Live demonstration at the conference · March 7, 2026
               </p>
+              </div>
+
+              {/* Right: Conference image */}
+              <div className="relative hidden lg:block min-h-[500px]">
+                <img
+                  src={img3}
+                  alt="Conference atmosphere"
+                  className="absolute inset-0 w-full h-full object-cover opacity-70"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/20 to-transparent" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Speakers Preview */}
-      <section className="py-20 relative overflow-hidden" ref={speakersRef}>
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 z-0">
-          <img 
-            src={img2} 
-            alt="Healthcare Innovation" 
-            className="parallax-img w-full h-full object-cover"
-          />
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Featured Speakers</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+
+      {/* Featured Speakers */}
+      <section className="py-24 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="scroll-animate text-center mb-16">
+            <span className="inline-block text-primary font-semibold text-sm uppercase tracking-widest mb-3">Meet the Speakers</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-5 text-slate-900">Featured Speakers</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Learn from leading voices in healthcare, fintech, AI, and entrepreneurship
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-10">
             {speakers.map((speaker, index) => (
-              <Card key={index} className="speaker-card text-center hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 hover:rotate-12 transition-transform duration-300">
-                    <span className="text-white font-bold text-lg">
-                      {speaker.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                    </span>
-                  </div>
-                  <CardTitle className="text-lg">{speaker.name}</CardTitle>
-                  <p className="text-sm text-primary font-semibold">{speaker.title}</p>
-                </CardHeader>
-              </Card>
+              <div
+                key={index}
+                className={`scroll-animate stagger-${Math.min(index + 1, 5)} bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-slate-100 text-center`}
+              >
+                <div className="aspect-square overflow-hidden">
+                  <img
+                    src={speaker.image}
+                    alt={speaker.name}
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-4">
+                  <p className="font-bold text-slate-900 text-sm leading-tight mb-1">{speaker.name}</p>
+                  <p className="text-primary text-xs font-medium leading-tight">{speaker.title}</p>
+                </div>
+              </div>
             ))}
           </div>
 
-          <div className="text-center">
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/special-guests">View All Speakers</Link>
+          <div className="scroll-animate text-center">
+            <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300" asChild>
+              <Link href="/special-guests">
+                View All Speakers <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
           </div>
         </div>
       </section>
 
+
       {/* What to Expect */}
-      <section className="py-20 bg-slate-50 relative overflow-hidden" ref={expectRef}>
-        {/* Background Image */}
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1/2 h-3/4 opacity-10 z-0">
-          <img 
-            src={img3} 
-            alt="Digital Healthcare" 
-            className="parallax-img w-full h-full object-cover rounded-r-3xl"
-          />
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="expect-title text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">What to Expect</h2>
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="scroll-animate text-center mb-16">
+            <span className="inline-block text-primary font-semibold text-sm uppercase tracking-widest mb-3">Program Highlights</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-5 text-slate-900">What to Expect</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              A full day of insights, networking, and game-changing announcements
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="expect-card hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Globe className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Platform Launch</h3>
-                <p className="text-muted-foreground">
-                  Official launch of Africa's largest telemedicine platform
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="expect-card hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Heart className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">HealthTech Insights</h3>
-                <p className="text-muted-foreground">
-                  Latest trends in digital health and AI applications
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="expect-card hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Zap className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Startup Growth</h3>
-                <p className="text-muted-foreground">
-                  Investment strategies and scaling healthcare startups
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="expect-card hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Users className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Networking</h3>
-                <p className="text-muted-foreground">
-                  Connect with healthcare professionals and fintech leaders
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="expect-card hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Shield className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Policy Insights</h3>
-                <p className="text-muted-foreground">
-                  Healthcare policy transformation and regulatory updates
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="expect-card hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Award className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Certificate</h3>
-                <p className="text-muted-foreground">
-                  Certificate of participation for all registered attendees
-                </p>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {expectations.map(({ icon: Icon, title, desc }, index) => (
+              <div
+                key={title}
+                className={`scroll-animate stagger-${Math.min(index + 1, 6)} flex gap-5 bg-slate-50 rounded-2xl p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-slate-100`}
+              >
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Icon className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 mb-1">{title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Royal Fathers Section */}
-      <section className="py-20" ref={royalRef}>
+      <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-4">
-          <div className="royal-title text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Distinguished Royal Fathers</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We are honored to host distinguished traditional leaders whose presence signifies 
+          <div className="scroll-animate text-center mb-16">
+            <span className="inline-block text-primary font-semibold text-sm uppercase tracking-widest mb-3">Royal Endorsement</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-5 text-slate-900">Distinguished Royal Fathers</h2>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              We are honored to host distinguished traditional leaders whose presence signifies
               the importance of innovation and development in our communities.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="royal-card text-center">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-2">His Imperial Majesty</h3>
-                <p className="text-primary font-semibold mb-2">Oba Ghandi Afolabi Olaolunja Oladunni Olaye</p>
-                <p className="text-sm text-muted-foreground">Orumogege III</p>
-              </CardContent>
-            </Card>
-
-            <Card className="royal-card text-center">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-2">His Imperial Majesty</h3>
-                <p className="text-primary font-semibold mb-2">Oba Adeyeye Enitan Babatunde Ogunwusi</p>
-                <p className="text-sm text-muted-foreground">Ojaja II</p>
-              </CardContent>
-            </Card>
-
-            <Card className="royal-card text-center">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-2">His Royal Majesty</h3>
-                <p className="text-primary font-semibold mb-2">Oba Sunday Olayinka Oyetade</p>
-                <p className="text-sm text-muted-foreground">Lagbami Osekun III</p>
-              </CardContent>
-            </Card>
+            {royalFathers.map((royal, index) => (
+              <div
+                key={index}
+                className={`scroll-animate stagger-${index + 1} bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-slate-100`}
+              >
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={royal.image}
+                    alt={royal.name}
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-6 text-center">
+                  <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">
+                    {royal.title}
+                  </span>
+                  <h3 className="font-bold text-slate-900 text-base leading-snug mb-1">{royal.name}</h3>
+                  <p className="text-slate-500 text-sm">{royal.role}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-20 bg-primary text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Join Us?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Be part of this historic launch and help shape the future of healthcare in Africa.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-3" asChild>
-              <Link href="/registration">Register Now</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-primary" asChild>
-              <Link href="/ticketing">View Pricing</Link>
-            </Button>
+      {/* Final CTA Banner */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="scale-in bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-72 h-72 bg-primary/20 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-72 h-72 bg-primary/15 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3 pointer-events-none" />
+
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <div className="flex justify-center mb-6">
+                <CheckCircle className="w-14 h-14 text-primary" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-5">Ready to Join Us?</h2>
+              <p className="text-slate-300 text-lg mb-10 leading-relaxed">
+                Be part of this historic event and help shape the future of healthcare in Africa.
+                Seats are limited — secure your spot today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-base px-8 py-3 font-semibold hover:scale-105 transition-all duration-300 shadow-lg" asChild>
+                  <Link href="/registration">
+                    Register Now <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white hover:text-slate-900 text-base px-8 py-3 font-semibold transition-all duration-300 hover:scale-105" asChild>
+                  <Link href="/ticketing">View Pricing</Link>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -1,36 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Plane, Ticket, Stamp, FileCheck, Handshake, Navigation, Globe, BadgeCheck } from "lucide-react";
 import { useLocation } from "wouter";
-import gsap from "gsap";
 
 export default function Services() {
-  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    sectionRefs.current.forEach((section) => {
-      if (!section) return;
-      const heading = section.querySelector("h2");
-      if (!heading) return;
-
-      gsap.fromTo(
-        heading,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    });
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target); } }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.scroll-animate, .fade-up, .slide-left, .slide-right, .scale-in').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   const coreServices = [
@@ -81,7 +64,7 @@ export default function Services() {
   return (
     <div className="min-h-screen pt-24 md:pt-28">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-24 space-y-20">
-        <section ref={(el) => (sectionRefs.current[0] = el)}>
+        <section className="scroll-animate">
           <div className="max-w-3xl mx-auto text-center">
             <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-primary mb-3">
               Services
@@ -96,7 +79,7 @@ export default function Services() {
           </div>
         </section>
 
-        <section ref={(el) => (sectionRefs.current[1] = el)} className="space-y-8">
+        <section className="space-y-8 scroll-animate">
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-center mb-4">Core Services</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {coreServices.map((service) => (
@@ -114,7 +97,7 @@ export default function Services() {
           </div>
         </section>
 
-        <section ref={(el) => (sectionRefs.current[2] = el)} className="grid lg:grid-cols-2 gap-10 items-stretch">
+        <section className="grid lg:grid-cols-2 gap-10 items-stretch scroll-animate">
           <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
             <CardContent className="p-8 md:p-10 space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
@@ -173,7 +156,7 @@ export default function Services() {
           </Card>
         </section>
 
-        <section ref={(el) => (sectionRefs.current[3] = el)}>
+        <section className="scroll-animate">
           <Card className="bg-gradient-to-br from-black via-black to-[#111] text-white border-primary/30">
             <CardContent className="p-8 md:p-10 lg:p-12 grid lg:grid-cols-[1.1fr,1fr] gap-8 items-center">
               <div className="space-y-4">

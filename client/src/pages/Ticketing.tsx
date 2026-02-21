@@ -1,15 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Ticket, CheckCircle, Clock, Star, Users, Award, AlertTriangle, CreditCard, Loader2 } from "lucide-react";
+import { Ticket, CheckCircle, Clock, Star, Users, Award, AlertTriangle, Loader2 } from "lucide-react";
 import { PalmPayService, getSuccessUrl } from '@/lib/palmpay';
+import palmpayLogo from "../assets/palmpay-pay.PNG";
 
 export default function Ticketing() {
   const [isLoading, setIsLoading] = useState<string | null>(null);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target); } }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.scroll-animate, .fade-up, .slide-left, .slide-right, .scale-in').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   const handleTicketPurchase = async (ticketId: string, amount: number, ticketName: string) => {
-    // For this demo, we'll collect user data with prompts - in a real app, this would come from a form
     const name = prompt('Enter your full name:');
     const email = prompt('Enter your email address:');
     const phone = prompt('Enter your phone number:');
@@ -23,15 +32,13 @@ export default function Ticketing() {
     
     try {
       const paymentResponse = await PalmPayService.initializePayment({
-        amount: amount,
-        email: email,
-        phone: phone,
-        name: name,
+        amount,
+        email,
+        phone,
+        name,
         itemType: `Conference Ticket - ${ticketName}`,
         redirectUrl: getSuccessUrl('ticket', ticketId)
       });
-
-      // Redirect to PalmPay payment page
       PalmPayService.redirectToPayment(paymentResponse.paymentUrl);
     } catch (error) {
       console.error('Ticket purchase error:', error);
@@ -46,7 +53,7 @@ export default function Ticketing() {
       id: "regular",
       name: "Regular Package",
       price: "₦1,000",
-      originalPrice: null,
+      amount: 1000,
       features: [
         "Official Volunteer ID Badge",
         "Digital Certificate of Volunteering",
@@ -56,14 +63,15 @@ export default function Ticketing() {
         "Group Photo Recognition",
       ],
       badge: "Smart & Simple",
-      badgeColor: "bg-blue-500",
+      badgeVariant: "secondary" as const,
       description: "Perfect for students and first-time volunteers. Smart. Simple. Impactful.",
+      highlight: false,
     },
     {
       id: "premium",
       name: "Premium Package",
       price: "₦5,000",
-      originalPrice: null,
+      amount: 5000,
       features: [
         "Everything in Regular",
         "Official MedFintech Branded T-Shirt",
@@ -74,14 +82,15 @@ export default function Ticketing() {
         "Priority Consideration for Future Events",
       ],
       badge: "Most Popular",
-      badgeColor: "bg-primary",
+      badgeVariant: "default" as const,
       description: "Professional. Visible. Elevated. For volunteers who want better access and networking.",
+      highlight: true,
     },
     {
       id: "vip",
       name: "VIP Package",
       price: "₦15,000",
-      originalPrice: null,
+      amount: 15000,
       features: [
         "Everything in Premium",
         "VIP Seating Access",
@@ -92,62 +101,92 @@ export default function Ticketing() {
         "Early Access to MedxVerse Opportunities",
       ],
       badge: "Leadership Level",
-      badgeColor: "bg-purple-500",
+      badgeVariant: "outline" as const,
       description: "Exclusive. Recognized. Leadership Level. For serious volunteers and emerging leaders.",
+      highlight: false,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 pt-24 md:pt-28">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
-        <div className="text-center mb-8 md:mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <Ticket className="w-10 h-10 md:w-12 md:h-12 text-primary mr-3 md:mr-4" />
+    <div className="min-h-screen bg-slate-50 pt-24 md:pt-28">
+
+      {/* Page Header */}
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
+        <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-6 scale-in">
+            <Ticket className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3 md:mb-4">Volunteer Packages</h1>
-          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
-            Join the MEDFINTECH CONFERENCE 2026 team. Choose the volunteer package that fits your level of engagement and unlock exclusive benefits while making a meaningful impact.
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 scroll-animate stagger-1">Volunteer Packages</h1>
+          <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed scroll-animate stagger-2">
+            Join the MEDFINTECH CONFERENCE 2026 team. Choose the volunteer package that fits your level of engagement and unlock exclusive benefits.
           </p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
-          {ticketTypes.map((ticket) => (
-            <Card key={ticket.id} className="relative hover:shadow-lg transition-shadow">
-              {ticket.badge && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className={`${ticket.badgeColor} text-white px-3 py-1`}>
-                    {ticket.badge}
-                  </Badge>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
+
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+          {ticketTypes.map((ticket, idx) => (
+            <div
+              key={ticket.id}
+              className={`relative rounded-2xl flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-xl scroll-animate ${idx === 0 ? 'stagger-1' : idx === 1 ? 'stagger-2' : 'stagger-3'} ${
+                ticket.highlight
+                  ? "bg-primary text-white shadow-2xl shadow-primary/30 scale-105"
+                  : "bg-white border border-slate-200 shadow-sm"
+              }`}
+            >
+              {/* Badge */}
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                <span className={`inline-block px-4 py-1 rounded-full text-xs font-bold tracking-wide shadow ${
+                  ticket.highlight
+                    ? "bg-white text-primary"
+                    : ticket.id === "vip"
+                    ? "bg-purple-600 text-white"
+                    : "bg-slate-700 text-white"
+                }`}>
+                  {ticket.badge}
+                </span>
+              </div>
+
+              <div className="p-8 flex flex-col flex-1">
+                {/* Title & Price */}
+                <div className="text-center mb-6 pt-2">
+                  <h3 className={`text-xl font-bold mb-4 ${ticket.highlight ? "text-white" : "text-slate-900"}`}>
+                    {ticket.name}
+                  </h3>
+                  <div className={`text-5xl font-extrabold mb-2 ${ticket.highlight ? "text-white" : "text-primary"}`}>
+                    {ticket.price}
+                  </div>
+                  <p className={`text-sm leading-relaxed ${ticket.highlight ? "text-white/80" : "text-slate-500"}`}>
+                    {ticket.description}
+                  </p>
                 </div>
-              )}
-              
-              <CardHeader className="text-center pt-8">
-                <CardTitle className="text-2xl font-bold">{ticket.name}</CardTitle>
-                <div className="flex items-center justify-center space-x-2 mt-4">
-                  {ticket.originalPrice && (
-                    <span className="text-lg text-muted-foreground line-through">
-                      {ticket.originalPrice}
-                    </span>
-                  )}
-                  <span className="text-4xl font-bold text-primary">{ticket.price}</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-2">{ticket.description}</p>
-              </CardHeader>
-              
-              <CardContent className="space-y-4">
-                <ul className="space-y-3">
-                  {ticket.features.map((feature, index) => (
-                    <li key={index} className="flex items-start">
-                      <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{feature}</span>
+
+                {/* Divider */}
+                <div className={`border-t mb-6 ${ticket.highlight ? "border-white/20" : "border-slate-100"}`} />
+
+                {/* Features */}
+                <ul className="space-y-3 flex-1 mb-8">
+                  {ticket.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <CheckCircle className={`w-4 h-4 mt-0.5 flex-shrink-0 ${ticket.highlight ? "text-white" : "text-primary"}`} />
+                      <span className={`text-sm ${ticket.highlight ? "text-white/90" : "text-slate-600"}`}>
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
-                
-                <Button 
-                  className="w-full" 
-                  size="lg" 
-                  onClick={() => handleTicketPurchase(ticket.id, parseInt(ticket.price.replace('₦', '').replace(',', '')), ticket.name)}
+
+                {/* CTA Button */}
+                <Button
+                  size="lg"
+                  className={`w-full font-semibold ${
+                    ticket.highlight
+                      ? "bg-white text-primary hover:bg-slate-100"
+                      : "bg-primary text-white hover:bg-primary/90"
+                  }`}
+                  onClick={() => handleTicketPurchase(ticket.id, ticket.amount, ticket.name)}
                   disabled={isLoading === ticket.id}
                 >
                   {isLoading === ticket.id ? (
@@ -157,114 +196,103 @@ export default function Ticketing() {
                     </>
                   ) : (
                     <>
-                      <CreditCard className="w-4 h-4 mr-2" />
-                      Pay with PalmPay - {ticket.price}
+                      <img src={palmpayLogo} alt="PalmPay" className="w-5 h-5 mr-2 rounded-sm object-contain" />
+                      Pay with PalmPay — {ticket.price}
                     </>
                   )}
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
 
-        <div className="mt-16 max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-green-50 border-green-200">
-              <CardContent className="p-6">
-                <div className="flex items-center mb-4">
-                  <Users className="w-6 h-6 text-green-600 mr-3" />
-                  <h3 className="text-lg font-semibold">Volunteer Access</h3>
+        {/* Info Cards Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10">
+          <Card className="border-0 shadow-sm bg-green-50 slide-left">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-full bg-green-100 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-green-600" />
                 </div>
-                <p className="text-muted-foreground mb-4">
-                  Volunteers who have purchased the official MedFintech Volunteer Vest automatically receive free conference entry and do not need to purchase a separate ticket.
-                </p>
-                <Button variant="outline" className="w-full border-green-500 text-green-700 hover:bg-green-50">
-                  Learn About Volunteering
-                </Button>
-              </CardContent>
-            </Card>
+                <h3 className="font-semibold text-slate-800">Volunteer Access</h3>
+              </div>
+              <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+                Volunteers who have purchased the official MedFintech Volunteer Vest automatically receive free conference entry and do not need to purchase a separate ticket.
+              </p>
+              <Button variant="outline" size="sm" className="border-green-400 text-green-700 hover:bg-green-100">
+                Learn About Volunteering
+              </Button>
+            </CardContent>
+          </Card>
 
-            <Card className="bg-amber-50 border-amber-200">
-              <CardContent className="p-6">
-                <div className="flex items-center mb-4">
-                  <Award className="w-6 h-6 text-amber-600 mr-3" />
-                  <h3 className="text-lg font-semibold">What Your Ticket Includes</h3>
+          <Card className="border-0 shadow-sm bg-amber-50 slide-right">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center">
+                  <Award className="w-5 h-5 text-amber-600" />
                 </div>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-amber-600 mr-2 mt-0.5 flex-shrink-0" />
-                    Access to all conference sessions
+                <h3 className="font-semibold text-slate-800">What Your Ticket Includes</h3>
+              </div>
+              <ul className="space-y-2">
+                {[
+                  "Access to all conference sessions",
+                  "Entry to exhibition and innovation showcase",
+                  "Networking opportunities",
+                  "Conference materials",
+                  "Official Certificate of Participation",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                    <CheckCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    {item}
                   </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-amber-600 mr-2 mt-0.5 flex-shrink-0" />
-                    Entry to exhibition and innovation showcase
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-amber-600 mr-2 mt-0.5 flex-shrink-0" />
-                    Networking opportunities
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-amber-600 mr-2 mt-0.5 flex-shrink-0" />
-                    Conference materials
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-amber-600 mr-2 mt-0.5 flex-shrink-0" />
-                    Official Certificate of Participation
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        <div className="mt-16 max-w-2xl mx-auto">
-          <Card className="bg-slate-50 border-slate-200">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <AlertTriangle className="w-5 h-5 mr-2" />
-                Ticket Policy
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-start">
-                  <div className="w-2 h-2 bg-slate-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  All tickets are non-transferable.
-                </li>
-                <li className="flex items-start">
-                  <div className="w-2 h-2 bg-slate-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  Confirmation receipt (digital or printed) must be presented at the accreditation desk.
-                </li>
-                <li className="flex items-start">
-                  <div className="w-2 h-2 bg-slate-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  Ticket sales close once maximum venue capacity is reached.
-                </li>
-                <li className="flex items-start">
-                  <div className="w-2 h-2 bg-slate-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  No refunds after confirmation unless officially announced by the organizing committee.
-                </li>
+                ))}
               </ul>
             </CardContent>
           </Card>
         </div>
 
-        <div className="mt-16 max-w-2xl mx-auto">
-          <Card className="bg-primary/5 border-primary/20">
+        {/* Ticket Policy */}
+        <div className="max-w-4xl mx-auto mb-10">
+          <Card className="border-0 shadow-sm bg-white scroll-animate">
             <CardContent className="p-6">
-              <div className="flex items-center mb-4">
-                <Clock className="w-6 h-6 text-primary mr-3" />
-                <h3 className="text-lg font-semibold">Limited Seats Available</h3>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center">
+                  <AlertTriangle className="w-5 h-5 text-slate-500" />
+                </div>
+                <h3 className="font-semibold text-slate-800">Ticket Policy</h3>
               </div>
-              <p className="text-muted-foreground mb-4">
-                Early registration discount available until February 28th, 2026. Secure your position at the forefront of healthcare innovation, financial inclusion, and digital transformation.
-              </p>
-              <div className="flex items-center">
-                <Star className="w-5 h-5 text-yellow-500 mr-2" />
-                <span className="text-sm">Join 200+ healthcare professionals already registered</span>
-              </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  "All tickets are non-transferable.",
+                  "Confirmation receipt must be presented at accreditation desk.",
+                  "Ticket sales close once maximum venue capacity is reached.",
+                  "No refunds after confirmation unless officially announced.",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-500">
+                    <div className="w-1.5 h-1.5 rounded-full bg-slate-400 mt-2 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </CardContent>
           </Card>
         </div>
+
+        {/* Urgency Banner */}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-primary to-green-600 rounded-2xl p-6 md:p-8 text-white text-center scale-in">
+            <Clock className="w-8 h-8 mx-auto mb-3 opacity-90" />
+            <h3 className="text-xl font-bold mb-2">Limited Seats Available</h3>
+            <p className="text-white/85 mb-4 max-w-lg mx-auto text-sm leading-relaxed">
+              Early registration discount available until February 28th, 2026. Secure your position at the forefront of healthcare innovation.
+            </p>
+            <div className="inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-1.5 text-sm font-medium">
+              <Star className="w-4 h-4 text-yellow-300" />
+              Join 200+ healthcare professionals already registered
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );

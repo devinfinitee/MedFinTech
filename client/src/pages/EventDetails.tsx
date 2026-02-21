@@ -1,10 +1,18 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, Clock, MapPin, Users, Mic, Coffee, Award, BookOpen } from "lucide-react";
+import { Link } from "wouter";
+import img2 from "@/assets/img-2.jpg";
 
 export default function EventDetails() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target); } }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.scroll-animate, .fade-up, .slide-left, .slide-right, .scale-in').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
   const scheduleDay1 = [
     { time: "8:00 AM", title: "Arrival & Registration", type: "networking", speaker: "Badge collection, media engagement, and networking. Exhibition booths open." },
     { time: "9:00 AM", title: "Opening Session", type: "keynote", speaker: "Opening Prayer/Reflection, Welcome Address, Introduction of Dignitaries" },
@@ -25,185 +33,153 @@ export default function EventDetails() {
     { time: "3:45 PM", title: "Closing Remarks", type: "networking", speaker: "Media Interviews and Group Photography" },
   ];
 
-  const scheduleDay2 = [
-    { time: "8:30 AM", title: "Continental Breakfast", type: "networking", speaker: "" },
-    { time: "9:30 AM", title: "Keynote: Sustainable Business Practices", type: "keynote", speaker: "Dr. Alex Chen" },
-    { time: "11:00 AM", title: "Coffee Break", type: "break", speaker: "" },
-    { time: "11:30 AM", title: "Breakout Sessions (Choose 1 of 3)", type: "workshop", speaker: "Various" },
-    { time: "1:00 PM", title: "Award Ceremony Lunch", type: "networking", speaker: "" },
-    { time: "2:30 PM", title: "Closing Keynote: Looking Ahead", type: "keynote", speaker: "Robert Kim" },
-    { time: "4:00 PM", title: "Farewell Reception", type: "networking", speaker: "" },
+  type ScheduleType = "keynote" | "panel" | "workshop" | "networking" | "break";
+
+  const typeConfig: Record<ScheduleType, { label: string; color: string; bg: string; icon: React.ReactNode }> = {
+    keynote:    { label: "Keynote",    color: "text-primary",    bg: "bg-primary/10",  icon: <Mic       className="w-3.5 h-3.5" /> },
+    panel:      { label: "Panel",      color: "text-blue-600",   bg: "bg-blue-50",     icon: <Users     className="w-3.5 h-3.5" /> },
+    workshop:   { label: "Workshop",   color: "text-purple-600", bg: "bg-purple-50",   icon: <BookOpen  className="w-3.5 h-3.5" /> },
+    networking: { label: "Networking", color: "text-orange-600", bg: "bg-orange-50",   icon: <Coffee    className="w-3.5 h-3.5" /> },
+    break:      { label: "Break",      color: "text-slate-500",  bg: "bg-slate-100",   icon: <Clock     className="w-3.5 h-3.5" /> },
+  };
+
+  const included = [
+    "All keynote and panel sessions",
+    "Welcome and closing receptions",
+    "Networking lunches and coffee breaks",
+    "Conference materials and swag bag",
+    "Digital access to presentation slides",
+    "Official Certificate of Participation",
   ];
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'keynote': return <Mic className="w-4 h-4" />;
-      case 'panel': return <Users className="w-4 h-4" />;
-      case 'workshop': return <BookOpen className="w-4 h-4" />;
-      case 'networking': return <Coffee className="w-4 h-4" />;
-      case 'break': return <Clock className="w-4 h-4" />;
-      case 'discussion': return <Users className="w-4 h-4" />;
-      default: return <Calendar className="w-4 h-4" />;
-    }
-  };
-
-  const getTypeBadge = (type: string) => {
-    const colors = {
-      keynote: 'bg-primary text-white',
-      panel: 'bg-blue-500 text-white',
-      workshop: 'bg-green-500 text-white',
-      networking: 'bg-orange-500 text-white',
-      break: 'bg-gray-500 text-white',
-      discussion: 'bg-purple-500 text-white',
-    };
-    return colors[type as keyof typeof colors] || 'bg-gray-500 text-white';
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 pt-24 md:pt-28">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
-        <div className="text-center mb-8 md:mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <Calendar className="w-10 h-10 md:w-12 md:h-12 text-primary mr-3 md:mr-4" />
+    <div className="min-h-screen bg-slate-50 pt-24 md:pt-28">
+
+      {/* Page Header */}
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20 relative overflow-hidden">
+        {/* Background photo */}
+        <div className="absolute inset-0 z-0">
+          <img src={img2} alt="Conference" className="w-full h-full object-cover opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-slate-800/70 to-slate-900/85" />
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-6 scale-in">
+            <Calendar className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3 md:mb-4">Event Details</h1>
-          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
-            Everything you need to know about MEDFINTECH CONFERENCE 2026 - Official Launch of Africa's Largest Telemedicine Platform.
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 scroll-animate stagger-1">Event Details</h1>
+          <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-6 scroll-animate stagger-2">
+            Everything you need to know about MEDFINTECH CONFERENCE 2026 — the official launch of Africa's largest telemedicine platform.
           </p>
+          <div className="flex flex-wrap justify-center gap-3 scroll-animate stagger-3">
+            <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 text-sm font-medium">
+              <Calendar className="w-4 h-4 text-primary" /> Saturday, 7th March 2026
+            </span>
+            <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 text-sm font-medium">
+              <Clock className="w-4 h-4 text-primary" /> 9:00 AM – 4:00 PM
+            </span>
+            <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 text-sm font-medium">
+              <MapPin className="w-4 h-4 text-primary" /> The Assembly, Ogbomoso, Oyo State
+            </span>
+          </div>
         </div>
+      </div>
 
-        {/* Event Overview */}
-        <div className="max-w-4xl mx-auto mb-8 md:mb-12">
-          <Card>
-            <CardContent className="p-4 md:p-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
-                <div className="flex items-center">
-                  <Calendar className="w-6 h-6 md:w-8 md:h-8 text-primary mr-3 md:mr-4 flex-shrink-0" />
-                  <div>
-                    <h3 className="font-semibold text-sm md:text-base">Date</h3>
-                    <p className="text-muted-foreground text-xs md:text-sm">Saturday, 7th March 2026</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <Clock className="w-6 h-6 md:w-8 md:h-8 text-primary mr-3 md:mr-4 flex-shrink-0" />
-                  <div>
-                    <h3 className="font-semibold text-sm md:text-base">Time</h3>
-                    <p className="text-muted-foreground text-xs md:text-sm">9:00 AM - 4:00 PM</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <MapPin className="w-6 h-6 md:w-8 md:h-8 text-primary mr-3 md:mr-4 flex-shrink-0" />
-                  <div>
-                    <h3 className="font-semibold text-sm md:text-base">Venue</h3>
-                    <p className="text-muted-foreground text-xs md:text-sm">The Assembly, Ogbomoso, Oyo State</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Schedule Tabs */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-6">Conference Schedule - Saturday, 7th March 2026</h2>
-            <div className="space-y-4">
-              {scheduleDay1.map((item, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start space-x-4">
-                        <div className="text-lg font-mono font-semibold text-primary min-w-[80px]">
-                          {item.time}
+
+          {/* Legend */}
+          <div className="flex flex-wrap gap-3 mb-8">
+            {(Object.entries(typeConfig) as [ScheduleType, typeof typeConfig[ScheduleType]][]).map(([key, cfg]) => (
+              <span key={key} className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full ${cfg.bg} ${cfg.color}`}>
+                {cfg.icon} {cfg.label}
+              </span>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            {/* Schedule */}
+            <div className="lg:col-span-2 space-y-3 slide-left">
+              <h2 className="text-xl font-bold text-slate-900 mb-5">Conference Schedule — Saturday, 7th March 2026</h2>
+              {scheduleDay1.map((item, index) => {
+                const cfg = typeConfig[item.type as ScheduleType] || typeConfig.networking;
+                return (
+                  <div
+                    key={index}
+                    className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-5"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="text-primary font-mono font-bold text-sm w-20 flex-shrink-0 pt-0.5">
+                        {item.time}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h3 className="font-semibold text-slate-900 text-sm">{item.title}</h3>
+                          <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${cfg.bg} ${cfg.color} flex-shrink-0`}>
+                            {cfg.icon} {cfg.label}
+                          </span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          {getTypeIcon(item.type)}
-                          <Badge className={getTypeBadge(item.type)}>
-                            {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
-                          </Badge>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold">{item.title}</h3>
-                          {item.speaker && (
-                            <p className="text-muted-foreground mt-1">
-                              Speaker: {item.speaker}
-                            </p>
-                          )}
-                        </div>
+                        {item.speaker && (
+                          <p className="text-sm text-slate-500 leading-relaxed">{item.speaker}</p>
+                        )}
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                );
+              })}
             </div>
-          </div>
-        </div>
 
-        {/* Additional Info */}
-        <div className="mt-16 max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Award className="w-5 h-5 mr-2" />
-                  What's Included
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                    All keynote and breakout sessions
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                    Welcome and closing receptions
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                    Networking lunches and coffee breaks
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                    Conference materials and swag bag
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                    Digital access to presentation slides
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+            {/* Sidebar */}
+            <div className="space-y-6 slide-right">
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <MapPin className="w-5 h-5 mr-2" />
-                  Venue Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold">Location</h4>
-                    <p className="text-muted-foreground">
-                      Grand Convention Center<br />
-                      123 Conference Drive<br />
-                      Downtown, ST 12345
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Parking</h4>
-                    <p className="text-muted-foreground">
-                      Complimentary parking available on-site
-                    </p>
-                  </div>
-                  <Button variant="outline" className="w-full">
-                    View Map & Directions
-                  </Button>
+              {/* Venue */}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <MapPin className="w-5 h-5 text-primary" />
+                  <h3 className="font-bold text-slate-900">Venue</h3>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="space-y-1 text-sm text-slate-600">
+                  <p className="font-medium text-slate-800">The Assembly</p>
+                  <p>Beside BON Hotel, Ogbomoso, Oyo State</p>
+                  <p className="text-xs text-slate-400 mt-1">~30 min from Ilorin Airport</p>
+                </div>
+              </div>
+
+              {/* What's included */}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Award className="w-5 h-5 text-primary" />
+                  <h3 className="font-bold text-slate-900">What's Included</h3>
+                </div>
+                <ul className="space-y-2.5">
+                  {included.map((inc, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-1.5" />
+                      {inc}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white">
+                <h3 className="font-bold text-lg mb-2">Ready to Join?</h3>
+                <p className="text-slate-300 text-sm mb-5 leading-relaxed">
+                  Secure your seat before venue capacity is reached. Register and pay online in minutes.
+                </p>
+                <Link href="/registration">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white font-semibold">
+                    Register Now
+                  </Button>
+                </Link>
+                <Link href="/ticketing">
+                  <Button variant="outline" className="w-full mt-3 border-white/20 text-white hover:bg-white/10 bg-transparent">
+                    View Ticket Prices
+                  </Button>
+                </Link>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>

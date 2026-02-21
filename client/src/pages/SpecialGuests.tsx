@@ -1,7 +1,7 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, Calendar, Users, Mic, Award, Linkedin, Twitter, Crown } from "lucide-react";
+import { Star, Crown, Mic, Users, Calendar, CheckCircle } from "lucide-react";
+import { Link } from "wouter";
 import amosImage from "../assets/amos-franklin.jpg";
 import zainabImage from "../assets/zainab-abdulsalam.JPG";
 import amooImage from "../assets/amoo-yetunde.jpg";
@@ -13,22 +13,27 @@ import sundayOladapoImage from "../assets/sunday-oladapo.JPG";
 import ogunkolaImage from "../assets/ogunkola-ifeoluwa.jpg";
 
 export default function SpecialGuests() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target); } }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.scroll-animate, .fade-up, .slide-left, .slide-right, .scale-in').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   const royalFathers = [
     {
       name: "His Imperial Majesty, Oba Adeyeye Enitan Babatunde Ogunwusi, Ojaja II",
       title: "The Ooni of Ife",
-      company: "Traditional Institution",
-      bio: "His Imperial Majesty brings a unique perspective on how traditional institutions can serve as catalysts for digital transformation in healthcare and economic development across Africa.",
       session: "Traditional Institutions as Catalysts for Digital Health and Economic Transformation",
       time: "9:30 AM",
       image: adeyeyeImage,
       type: "Royal Address I",
     },
     {
-      name: "His Imperial Majesty, Oba Ghandi Afọlábí Oladunni Ọláoyè, Orumógege III",
+      name: "His Imperial Majesty, Oba Ghandi Afolabi Oladunni Olaoye, Orumogege III",
       title: "The Soun of Ogbomoso",
-      company: "Traditional Institution",
-      bio: "His Imperial Majesty champions youth empowerment and innovation, providing visionary leadership on the role of young Africans in shaping the continent's digital economy.",
       session: "Empowering the Next Generation: Youth, Innovation, and the Future of Africa's Digital Economy",
       time: "9:45 AM",
       image: obaGhandiImage,
@@ -37,8 +42,6 @@ export default function SpecialGuests() {
     {
       name: "His Royal Majesty, Oba Sunday Oladapo Oyediran, Lagbami Osekun III",
       title: "Traditional Ruler",
-      company: "Traditional Institution",
-      bio: "His Royal Majesty offers invaluable insights on how traditional leadership can drive community health initiatives, financial inclusion, and sustainable development in local communities.",
       session: "Community Health, Financial Inclusion, and the Role of Leadership in Sustainable Development",
       time: "Royal Address",
       image: sundayOladapoImage,
@@ -46,327 +49,254 @@ export default function SpecialGuests() {
     },
   ];
 
-  const keynoteGuests = [
+  const keynoteSpeakers = [
     {
       name: "Amos Franklin Momodu",
       title: "Chief Executive Officer",
       company: "MedxVerse",
-      field: "Technology/Tech Industry",
-      bio: "I am passionate about leveraging technology and artificial intelligence to develop innovative solutions that addresses real-world challenges and drive meaningful social impact, additionally, i take pride in mentoring emerging entrepreneurs and contributing to thought leadership through public speaking.",
-      interests: "Technology innovation, AI solutions, mentoring entrepreneurs, thought leadership, public speaking",
+      bio: "Passionate about leveraging technology and AI to develop innovative solutions that address real-world challenges and drive meaningful social impact.",
       session: "AI, Data, and Trust: Building Secure Digital Health Systems in Africa",
-      time: "10:30 AM",
-      achievements: ["CEO of MedxVerse", "AI & Healthcare Innovation Expert", "Tech Entrepreneur"],
+      time: "10:00 AM",
       image: amosImage,
-      email: "contact@medxverse.com",
-      social: { linkedin: "#", twitter: "#" },
     },
     {
       name: "Dr. Zainab Abdulsalam",
       title: "Medical Doctor & Digital Health Strategist",
       company: "Women's Health Advocate",
-      bio: "Zainab Abdulsalam is a medical doctor, women's health advocate, and health content strategist passionate about making complex medical topics relatable and actionable. She's trained 50+ health writers and is building a movement to elevate health content standards across Africa. Through telemedicine advocacy, content strategy, and writer education, she's working to ensure that Africa's digital health revolution is built on medical integrity.",
+      bio: "Medical doctor, women's health advocate, and health content strategist. Trained 50+ health writers and building a movement to elevate health content standards across Africa.",
       session: "Telemedicine Platforms in Africa: From Concept to Community Impact",
-      time: "1:30 PM",
-      achievements: ["Medical Doctor (MBBS)", "Health Content Strategist", "Telemedicine Advocate"],
+      time: "12:10 PM",
       image: zainabImage,
-      email: "zainabsalamthewriter@gmail.com",
-      social: { linkedin: "#", twitter: "#" },
     },
     {
       name: "Archbishop Gbenga Ayansola (JP)",
       title: "Special Guest Speaker",
       company: "Community Leader",
-      bio: "Distinguished religious leader and justice of peace, bringing moral and ethical perspectives to healthcare innovation.",
+      bio: "Distinguished religious leader and justice of peace, bringing moral and ethical perspectives to healthcare innovation and community development.",
       session: "Special Guest Address",
       time: "3:00 PM",
-      achievements: ["Archbishop", "Justice of Peace", "Community Leader"],
       image: "GA",
-      social: { linkedin: "#", twitter: "#" },
     },
   ];
 
-  const panelGuests = [
+  const industryLeaders = [
     {
       name: "Boluwatife Agboola",
       title: "CEO",
       company: "Torchlife Africa",
       expertise: "The 'Digital Wallet' for Health: Making Care Affordable in Nigeria",
-      bio: "Boluwatife Agboola is a software engineer and impact-driven technologist focused on building scalable digital solutions. He is the founder of TorchLife, a healthcare crowdfunding initiative focused on supporting critical medical needs through transparent, technology-driven fundraising.",
+      bio: "Software engineer and impact-driven technologist focused on building scalable digital solutions for critical medical needs.",
       image: boluwatifeImage,
-      email: "bolutifegboola@gmail.com",
     },
     {
       name: "Olushola Adeoye",
       title: "CEO",
       company: "CallMate AI",
       expertise: "AI-Driven Customer Experience in Healthcare & Fintech",
-      bio: "Specializing in SAAS, Machine Learning and AI with deep interests in Gaming and Augmented Reality Fintech. Leading innovations in AI-driven customer experience solutions.",
-      discipline: "SAAS, Machine Learning and AI",
-      interests: "Gaming, Augmented Reality Fintech",
+      bio: "Specialising in SaaS, Machine Learning and AI with deep interests in Gaming and Augmented Reality Fintech.",
       image: "OA",
     },
     {
       name: "Adelabu Ayodeji Adetunji",
       title: "SME & Startup Growth Lead",
       company: "Flutterwave",
-      field: "Fintech/Business Development",
-      expertise: "Driving Financial Inclusion and Seamless Payment Solutions in Healthcare and Emerging Markets",
-      professionalInterests: "Inclusive development, data analysis",
-      personalInterests: "Continuing education, board games",
+      expertise: "Driving Financial Inclusion and Seamless Payment Solutions in Healthcare",
+      bio: "Growth lead at Flutterwave driving inclusive financial access across emerging markets.",
       image: ayodejiImage,
-      email: "ayodeji.adelabu@flutterwavego.com",
-      alternateEmail: "ayodejiadelabu@yahoo.com",
     },
     {
       name: "Amoo Yetunde Ololade",
       title: "Global Health Nurse",
       company: "Nursing (Global Health)",
       expertise: "Leadership, Innovation, and Entrepreneurship in Healthcare",
+      bio: "Dedicated global health professional championing leadership and entrepreneurship in the nursing profession.",
       image: amooImage,
-      email: "amooyetunde@rocketmail.com",
     },
     {
       name: "Ogunkola Ifeoluwa E.",
-      title: "MC (Master of Ceremonies)",
-      company: "Hadassah - The Compere Without Comparison",
-      expertise: "Event Hosting & Coordination",
-      role: "Conference Compere",
+      title: "Master of Ceremonies",
+      company: "Hadassah — The Compere Without Comparison",
+      expertise: "Conference Compere & Event Hosting",
+      bio: "Premier conference host bringing energy, expertise, and elegance to Africa's biggest innovation stages.",
       image: ogunkolaImage,
     },
   ];
 
+  const networkingHighlights = [
+    { icon: Users,    label: "VIP Reception",      desc: "Exclusive access for premium ticket holders" },
+    { icon: Mic,      label: "Q&A Sessions",       desc: "Interactive discussions after each keynote" },
+    { icon: Calendar, label: "One-on-One Meetings", desc: "Private meetings available for VIP attendees" },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 pt-24 md:pt-28">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
-        <div className="text-center mb-8 md:mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <Star className="w-10 h-10 md:w-12 md:h-12 text-primary mr-3 md:mr-4" />
+    <div className="min-h-screen bg-slate-50 pt-24 md:pt-28">
+
+      {/* Page Header */}
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
+        <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-6 scale-in">
+            <Star className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3 md:mb-4">Featured Speakers</h1>
-          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 scroll-animate stagger-1">Featured Speakers</h1>
+          <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed scroll-animate stagger-2">
             Meet our exceptional lineup of healthcare professionals, fintech innovators, and industry leaders driving the future of telemedicine in Africa.
           </p>
         </div>
+      </div>
 
-        {/* Royal Fathers - Fathers of the Day */}
-        <div className="max-w-6xl mx-auto mb-12 md:mb-16">
-          <div className="flex items-center justify-center mb-6 md:mb-8">
-            <Crown className="w-7 h-7 md:w-8 md:h-8 text-amber-600 mr-2 md:mr-3" />
-            <h2 className="text-2xl md:text-3xl font-bold text-amber-800">Fathers of the Day</h2>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
+
+        {/* Fathers of the Day */}
+        <div className="max-w-6xl mx-auto mb-16">
+          <div className="flex items-center gap-3 justify-center mb-10">
+            <Crown className="w-6 h-6 text-amber-600" />
+            <h2 className="text-2xl font-bold text-amber-800">Fathers of the Day</h2>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {royalFathers.map((royal) => (
-              <Card key={royal.name} className="overflow-hidden hover:shadow-xl transition-shadow border-2 border-amber-200">
-                <CardHeader className="text-center pb-4 bg-gradient-to-br from-amber-50 to-yellow-50">
-                  <div className="w-28 h-28 rounded-full mx-auto mb-4 overflow-hidden border-4 border-amber-300 shadow-lg">
-                    <img 
-                      src={royal.image} 
-                      alt={royal.name}
-                      className="w-full h-full object-cover"
-                    />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {royalFathers.map((royal, idx) => (
+              <div
+                key={royal.name}
+                className={`bg-white rounded-2xl border-2 border-amber-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden scroll-animate stagger-${idx + 1}`}
+              >
+                <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-6 flex flex-col items-center text-center">
+                  <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-amber-300 shadow-md mb-4 flex-shrink-0">
+                    <img src={royal.image} alt={royal.name} className="w-full h-full object-cover" />
                   </div>
-                  <Badge className="bg-amber-600 text-white hover:bg-amber-700 mb-2">
-                    {royal.type}
-                  </Badge>
-                  <CardTitle className="text-lg leading-tight">{royal.name}</CardTitle>
-                  <p className="text-amber-700 font-semibold text-sm">{royal.title}</p>
-                  <p className="text-muted-foreground text-xs">{royal.company}</p>
-                </CardHeader>
-                
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">{royal.bio}</p>
-                  
-                  <div className="bg-amber-50 rounded-lg p-3 border border-amber-200">
-                    <div className="flex items-start text-sm text-amber-800 font-semibold mb-1">
-                      <Crown className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
-                      <span>{royal.session}</span>
+                  <span className="bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">{royal.type}</span>
+                  <h3 className="font-bold text-slate-900 text-sm leading-snug mb-1">{royal.name}</h3>
+                  <p className="text-amber-700 font-semibold text-xs">{royal.title}</p>
+                </div>
+                <div className="p-5">
+                  <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                    <div className="flex items-start gap-2 mb-1">
+                      <Crown className="w-3.5 h-3.5 text-amber-600 mt-0.5 flex-shrink-0" />
+                      <p className="text-xs font-semibold text-amber-800 leading-snug">{royal.session}</p>
                     </div>
-                    <div className="flex items-center text-xs text-muted-foreground ml-6">
-                      <Calendar className="w-3 h-3 mr-1" />
-                      {royal.time}
-                    </div>
+                    <p className="text-xs text-slate-400 ml-5">{royal.time}</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Keynote Speakers */}
         <div className="max-w-6xl mx-auto mb-16">
-          <div className="flex items-center justify-center mb-8">
-            <Mic className="w-8 h-8 text-primary mr-3" />
-            <h2 className="text-3xl font-bold">Keynote Speakers</h2>
+          <div className="flex items-center gap-3 justify-center mb-10">
+            <Mic className="w-6 h-6 text-primary" />
+            <h2 className="text-2xl font-bold text-slate-900">Keynote Speakers</h2>
           </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-            {keynoteGuests.map((guest) => (
-              <Card key={guest.name} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <CardHeader className="text-center pb-4">
-                  {typeof guest.image === 'string' && guest.image.length === 2 ? (
-                    <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                      {guest.image}
-                    </div>
-                  ) : (
-                    <div className="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden">
-                      <img 
-                        src={guest.image} 
-                        alt={guest.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <CardTitle className="text-xl">{guest.name}</CardTitle>
-                  <p className="text-primary font-semibold">{guest.title}</p>
-                  <p className="text-muted-foreground">{guest.company}</p>
-                </CardHeader>
-                
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">{guest.bio}</p>
-                  
-                  <div className="bg-primary/5 rounded-lg p-3">
-                    <div className="flex items-center text-sm text-primary font-semibold mb-1">
-                      <Mic className="w-4 h-4 mr-2" />
-                      {guest.session}
-                    </div>
-                    <div className="flex items-center text-xs text-muted-foreground">
-                      <Calendar className="w-3 h-3 mr-1" />
-                      {guest.time}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="text-sm font-semibold mb-2 flex items-center">
-                      <Award className="w-4 h-4 mr-1" />
-                      Key Achievements
-                    </h4>
-                    <div className="space-y-1">
-                      {guest.achievements.map((achievement, index) => (
-                        <Badge key={index} variant="outline" className="text-xs mr-1 mb-1">
-                          {achievement}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="flex space-x-2 pt-2">
-                    <Button size="sm" variant="outline" className="flex-1">
-                      <Linkedin className="w-4 h-4 mr-1" />
-                      LinkedIn
-                    </Button>
-                    <Button size="sm" variant="outline" className="flex-1">
-                      <Twitter className="w-4 h-4 mr-1" />
-                      Twitter
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
 
-        {/* Panel Speakers */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <div className="flex items-center justify-center mb-8">
-            <Users className="w-8 h-8 text-primary mr-3" />
-            <h2 className="text-3xl font-bold">Industry Leaders & Experts</h2>
-          </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {panelGuests.map((guest) => (
-              <Card key={guest.name} className="text-center hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  {typeof guest.image === 'string' && guest.image.length === 2 ? (
-                    <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-lg font-bold mx-auto mb-3">
-                      {guest.image}
+            {keynoteSpeakers.map((speaker, idx) => (
+              <div
+                key={speaker.name}
+                className={`bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden scroll-animate stagger-${idx + 1}`}
+              >
+                {/* Photo */}
+                <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex flex-col items-center text-center flex-shrink-0">
+                  {typeof speaker.image === "string" && speaker.image.length === 2 ? (
+                    <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center text-white text-2xl font-bold mb-3">
+                      {speaker.image}
                     </div>
                   ) : (
-                    <div className="w-16 h-16 rounded-full mx-auto mb-3 overflow-hidden">
-                      <img 
-                        src={guest.image} 
-                        alt={guest.name}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="w-24 h-24 rounded-full overflow-hidden mb-3 border-2 border-white shadow-md">
+                      <img src={speaker.image as string} alt={speaker.name} className="w-full h-full object-cover" />
                     </div>
                   )}
-                  <CardTitle className="text-lg">{guest.name}</CardTitle>
-                  <p className="text-sm text-primary font-semibold">{guest.title}</p>
-                  <p className="text-xs text-muted-foreground">{guest.company}</p>
-                </CardHeader>
-                <CardContent>
-                  <Badge className="bg-primary/10 text-primary hover:bg-primary/20 text-xs">
-                    {guest.expertise}
-                  </Badge>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+                  <h3 className="font-bold text-slate-900">{speaker.name}</h3>
+                  <p className="text-primary text-sm font-semibold">{speaker.title}</p>
+                  <p className="text-slate-500 text-xs">{speaker.company}</p>
+                </div>
 
-        {/* Networking Opportunities */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-            <CardContent className="p-8">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold mb-4">Meet the Speakers</h2>
-                <p className="text-muted-foreground mb-6">
-                  Don't miss exclusive opportunities to connect with our speakers during dedicated networking sessions, 
-                  Q&A segments, and the VIP reception.
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Users className="w-6 h-6 text-white" />
+                {/* Content */}
+                <div className="p-5 flex flex-col flex-1">
+                  <p className="text-sm text-slate-500 leading-relaxed mb-4 flex-1">{speaker.bio}</p>
+                  <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
+                    <div className="flex items-start gap-2 mb-1">
+                      <Mic className="w-3.5 h-3.5 text-primary mt-0.5 flex-shrink-0" />
+                      <p className="text-xs font-semibold text-primary leading-snug">{speaker.session}</p>
                     </div>
-                    <h3 className="font-semibold">VIP Reception</h3>
-                    <p className="text-sm text-muted-foreground">Exclusive access for premium ticket holders</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Mic className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="font-semibold">Q&A Sessions</h3>
-                    <p className="text-sm text-muted-foreground">Interactive discussions after each keynote</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Calendar className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="font-semibold">One-on-One</h3>
-                    <p className="text-sm text-muted-foreground">Private meetings available for VIP attendees</p>
+                    <p className="text-xs text-slate-400 ml-5">{speaker.time}</p>
                   </div>
                 </div>
-                
-                <Button size="lg">
-                  Upgrade to VIP Access
-                </Button>
               </div>
-            </CardContent>
-          </Card>
+            ))}
+          </div>
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center">
-          <Card className="max-w-2xl mx-auto">
-            <CardContent className="p-8">
-              <h2 className="text-2xl font-bold mb-4">Join the Conversation</h2>
-              <p className="text-muted-foreground mb-6">
-                Be part of the dialogue that's shaping the future of our industry. Register now to learn from these incredible speakers.
-              </p>
-              <Button size="lg" className="mr-4">
-                Register Now
-              </Button>
-              <Button size="lg" variant="outline">
-                View Full Schedule
-              </Button>
-            </CardContent>
-          </Card>
+        {/* Industry Leaders */}
+        <div className="max-w-6xl mx-auto mb-16">
+          <div className="flex items-center gap-3 justify-center mb-10">
+            <Users className="w-6 h-6 text-primary" />
+            <h2 className="text-2xl font-bold text-slate-900">Industry Leaders & Experts</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {industryLeaders.map((leader, idx) => (
+              <div
+                key={leader.name}
+                className={`bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col items-center text-center scroll-animate stagger-${Math.min(idx + 1, 6)}`}
+              >
+                {typeof leader.image === "string" && leader.image.length === 2 ? (
+                  <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white text-xl font-bold mb-4">
+                    {leader.image}
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-slate-100 shadow-sm">
+                    <img src={leader.image as string} alt={leader.name} className="w-full h-full object-cover" />
+                  </div>
+                )}
+                <h3 className="font-bold text-slate-900 mb-0.5">{leader.name}</h3>
+                <p className="text-primary text-sm font-semibold mb-0.5">{leader.title}</p>
+                <p className="text-slate-400 text-xs mb-3">{leader.company}</p>
+                <p className="text-xs text-slate-500 leading-relaxed mb-3">{leader.bio}</p>
+                <span className="inline-block bg-primary/10 text-primary text-xs font-medium px-3 py-1 rounded-full">
+                  {leader.expertise}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* Networking Highlights + CTA */}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 md:p-10 text-white scale-in">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold mb-2">Meet the Speakers</h2>
+              <p className="text-slate-300 text-sm max-w-lg mx-auto">
+                Don't miss exclusive opportunities to connect with speakers during dedicated networking sessions, Q&A segments, and the VIP reception.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+              {networkingHighlights.map((item, i) => (
+                <div key={i} className="bg-white/10 rounded-xl p-4 text-center">
+                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 mb-3">
+                    <item.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h4 className="font-semibold text-sm mb-1">{item.label}</h4>
+                  <p className="text-slate-400 text-xs">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/registration">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 font-semibold w-full sm:w-auto">
+                  Register Now
+                </Button>
+              </Link>
+              <Link href="/ticketing">
+                <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 bg-transparent w-full sm:w-auto">
+                  View Ticket Options
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );

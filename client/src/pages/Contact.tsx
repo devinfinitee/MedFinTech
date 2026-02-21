@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Send, MessageCircle, Clock, Globe, Flag, BadgeCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import gsap from "gsap";
 import { openWhatsApp, whatsappConfig, emailJsConfig, defaultContactEmail } from "@/lib/emailjs";
 import emailjs from "@emailjs/browser";
 
@@ -18,23 +17,14 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (contentRef.current) {
-      const elements = Array.from(contentRef.current.children);
-      gsap.fromTo(
-        elements,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
-        }
-      );
-    }
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target); } }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.scroll-animate, .fade-up, .slide-left, .slide-right, .scale-in').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -83,8 +73,8 @@ export default function Contact() {
   return (
     <div className="min-h-screen pt-24 md:pt-28 bg-gradient-to-b from-background to-muted/20">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-24">
-        <div ref={contentRef}>
-          <div className="text-center mb-16">
+        <div>
+          <div className="text-center mb-16 scroll-animate">
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Get In Touch</h1>
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
               Have questions about our services? Our dedicated team is here to help you 24/7
@@ -92,7 +82,7 @@ export default function Contact() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-12">
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 slide-left">
               <Card className="hover-elevate transition-all border-2">
                 <CardContent className="p-8 md:p-10">
                   <div className="flex items-center gap-3 mb-8">
@@ -170,7 +160,7 @@ export default function Contact() {
               </Card>
             </div>
 
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-6 slide-right">
               <Card className="hover-elevate transition-all border-2 bg-gradient-to-br from-primary/5 to-primary/10">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-6">

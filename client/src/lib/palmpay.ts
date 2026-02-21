@@ -77,20 +77,20 @@ export class PalmPayService {
   static getTicketPricing() {
     return {
       student: {
-        amount: 10000,
-        displayPrice: '₦10,000',
-        originalPrice: '₦15,000',
-        discount: '33% off',
+        amount: 1000,
+        displayPrice: '₦1,000',
+        originalPrice: null,
+        discount: null,
       },
       general: {
-        amount: 20000,
-        displayPrice: '₦20,000',
-        originalPrice: '₦25,000',
-        discount: '20% off',
+        amount: 5000,
+        displayPrice: '₦5,000',
+        originalPrice: null,
+        discount: null,
       },
       vip: {
-        amount: 35000,
-        displayPrice: '₦35,000',
+        amount: 15000,
+        displayPrice: '₦15,000',
         originalPrice: null,
         discount: null,
       },

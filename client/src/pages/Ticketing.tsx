@@ -8,7 +8,6 @@ import palmpayLogo from "../assets/palmpay-pay.PNG";
 
 export default function Ticketing() {
   const [isLoading, setIsLoading] = useState<string | null>(null);
-  const isHomePage = false;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -51,65 +50,64 @@ export default function Ticketing() {
 
   const ticketTypes = [
     {
-      id: "regular",
-      name: "Regular Package",
+      id: "student",
+      name: "Student General Admission",
       price: "₦1,000",
       amount: 1000,
       features: [
-        "Official Volunteer ID Badge",
-        "Digital Certificate of Volunteering",
-        "Access to Volunteer Orientation",
-        "Access to Exhibition Area",
-        "Light Refreshment During Assigned Shift",
-        "Group Photo Recognition",
+        "Full access to all conference sessions",
+        "Entry to exhibition & innovation showcase",
+        "Networking opportunities with professionals",
+        "Digital conference materials",
+        "Official Certificate of Participation",
+        "Opportunities for internships & startup exposure",
       ],
-      badge: "Smart & Simple",
+      badge: "Students Only",
       badgeVariant: "secondary" as const,
-      description: "Perfect for students and first-time volunteers. Smart. Simple. Impactful.",
+      description: "Exclusively for students. Affordable access to Africa's boldest healthcare innovation event.",
       highlight: false,
     },
     {
-      id: "premium",
-      name: "Premium Package",
+      id: "general",
+      name: "General Admission",
       price: "₦5,000",
       amount: 5000,
       features: [
-        "Everything in Regular",
-        "Official MedFintech Branded T-Shirt",
-        "Hard Copy Certificate (Signed)",
-        "Access to Selected Main Sessions",
-        "Access to Networking Break",
-        "Professional Photo (1 branded backdrop photo)",
-        "Priority Consideration for Future Events",
+        "Full access to all keynote & panel sessions",
+        "Entry to exhibition & innovation showcase",
+        "Networking & collaboration sessions",
+        "Digital conference materials",
+        "Official Certificate of Participation",
+        "Opportunities for partnerships & startup exposure",
       ],
       badge: "Most Popular",
       badgeVariant: "default" as const,
-      description: "Professional. Visible. Elevated. For volunteers who want better access and networking.",
+      description: "The standard conference experience. Ideal for professionals, entrepreneurs, and innovators.",
       highlight: true,
     },
     {
       id: "vip",
-      name: "VIP Package",
+      name: "VIP Access",
       price: "₦15,000",
       amount: 15000,
       features: [
-        "Everything in Premium",
-        "VIP Seating Access",
+        "Everything in General Admission",
+        "VIP Seating — front row reserved section",
         "Special Recognition During Conference",
         "Executive Photo Opportunity with Speakers",
         "Signed Appreciation Letter from the CEO",
         "Invitation to Post-Conference Private Strategy Meetup",
         "Early Access to MedxVerse Opportunities",
       ],
-      badge: "Leadership Level",
+      badge: "VIP",
       badgeVariant: "outline" as const,
-      description: "Exclusive. Recognized. Leadership Level. For serious volunteers and emerging leaders.",
+      description: "Exclusive. Recognised. For leaders who want the full premium conference experience.",
       highlight: false,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-16 md:pt-20">
+    <div className="min-h-screen bg-slate-50 pt-24 md:pt-28">
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
@@ -117,9 +115,9 @@ export default function Ticketing() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-6 scale-in">
             <Ticket className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 scroll-animate stagger-1">Volunteer Packages</h1>
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 scroll-animate stagger-1">Conference Tickets</h1>
           <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed scroll-animate stagger-2">
-            Join the MEDFINTECH CONFERENCE 2026 team. Choose the volunteer package that fits your level of engagement and unlock exclusive benefits.
+            Secure your seat at MEDFINTECH CONFERENCE 2026. Choose the ticket tier that fits you and be part of Africa's boldest healthcare innovation summit.
           </p>
         </div>
       </div>
@@ -127,18 +125,18 @@ export default function Ticketing() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16 items-start pt-6">
           {ticketTypes.map((ticket, idx) => (
             <div
               key={ticket.id}
               className={`relative rounded-2xl flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-xl scroll-animate ${idx === 0 ? 'stagger-1' : idx === 1 ? 'stagger-2' : 'stagger-3'} ${
                 ticket.highlight
-                  ? "bg-primary text-white shadow-2xl shadow-primary/30 scale-105"
+                  ? "bg-primary text-white shadow-2xl shadow-primary/30 ring-2 ring-primary"
                   : "bg-white border border-slate-200 shadow-sm"
               }`}
             >
               {/* Badge */}
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+              <div className="flex justify-center pt-5 pb-1">
                 <span className={`inline-block px-4 py-1 rounded-full text-xs font-bold tracking-wide shadow ${
                   ticket.highlight
                     ? "bg-white text-primary"
@@ -150,9 +148,9 @@ export default function Ticketing() {
                 </span>
               </div>
 
-              <div className="p-8 flex flex-col flex-1">
+              <div className="px-5 pb-6 pt-2 flex flex-col flex-1">
                 {/* Title & Price */}
-                <div className="text-center mb-6 pt-2">
+                <div className="text-center mb-6">
                   <h3 className={`text-xl font-bold mb-4 ${ticket.highlight ? "text-white" : "text-slate-900"}`}>
                     {ticket.name}
                   </h3>
@@ -181,8 +179,8 @@ export default function Ticketing() {
 
                 {/* CTA Button */}
                 <Button
-                  size="lg"
-                  className={`w-full font-semibold ${
+                  size="sm"
+                  className={`w-full font-semibold py-3 h-auto text-xs flex flex-wrap justify-center gap-1 ${
                     ticket.highlight
                       ? "bg-white text-primary hover:bg-slate-100"
                       : "bg-primary text-white hover:bg-primary/90"
@@ -192,19 +190,66 @@ export default function Ticketing() {
                 >
                   {isLoading === ticket.id ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin" />
                       Processing...
                     </>
                   ) : (
                     <>
-                      <img src={palmpayLogo} alt="PalmPay" className="w-5 h-5 mr-2 rounded-sm object-contain" />
-                      Pay with PalmPay — {ticket.price}
+                      <img src={palmpayLogo} alt="PalmPay" className="w-4 h-4 rounded-sm object-contain" />
+                      <span>Pay with PalmPay — {ticket.price}</span>
                     </>
                   )}
                 </Button>
               </div>
             </div>
           ))}
+
+          {/* Volunteer Card — 4th tile */}
+          <div className="relative rounded-2xl flex flex-col bg-green-50 border-2 border-green-300 shadow-sm scroll-animate stagger-4 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+            {/* Badge */}
+            <div className="flex justify-center pt-5 pb-1">
+              <span className="inline-block px-4 py-1 rounded-full text-xs font-bold tracking-wide shadow bg-green-600 text-white">
+                Volunteer
+              </span>
+            </div>
+            <div className="px-5 pb-6 pt-2 flex flex-col flex-1">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold mb-4 text-slate-900">Volunteer Pass</h3>
+                <div className="text-5xl font-extrabold mb-2 text-green-600">₦7,000</div>
+                <p className="text-sm leading-relaxed text-slate-500">
+                  Serve, learn & grow. Includes your official Volunteer Vest + full conference entry.
+                </p>
+              </div>
+              <div className="border-t border-green-200 mb-6" />
+              <ul className="space-y-3 flex-1 mb-8">
+                {[
+                  "Official MedFintech Volunteer Vest",
+                  "Volunteer ID Badge",
+                  "Full conference access during shift",
+                  "Digital Certificate of Volunteering",
+                  "Group photo recognition",
+                  "Networking with speakers & professionals",
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-500" />
+                    <span className="text-sm text-slate-600">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                size="sm"
+                className="w-full font-semibold py-3 h-auto text-xs flex flex-wrap justify-center gap-1 bg-green-600 text-white hover:bg-green-700"
+                onClick={() => handleTicketPurchase("volunteer", 7000, "Volunteer Pass")}
+                disabled={isLoading === "volunteer"}
+              >
+                {isLoading === "volunteer" ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" />Processing...</>
+                ) : (
+                  <><img src={palmpayLogo} alt="PalmPay" className="w-4 h-4 rounded-sm object-contain" /><span>Pay with PalmPay — ₦7,000</span></>
+                )}
+              </Button>
+            </div>
+          </div>
         </div>
 
         {/* Info Cards Row */}
@@ -215,11 +260,19 @@ export default function Ticketing() {
                 <div className="w-9 h-9 rounded-full bg-green-100 flex items-center justify-center">
                   <Users className="w-5 h-5 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-slate-800">Volunteer Access</h3>
+                <h3 className="font-semibold text-slate-800">Volunteer Access — ₦7,000</h3>
               </div>
-              <p className="text-sm text-slate-600 mb-4 leading-relaxed">
-                Volunteers who have purchased the official MedFintech Volunteer Vest automatically receive free conference entry and do not need to purchase a separate ticket.
+              <p className="text-sm text-slate-600 mb-3 leading-relaxed">
+                Want to serve at the conference? Volunteers pay <strong className="text-green-700">₦7,000</strong> which covers their official MedFintech Volunteer Vest and grants full conference entry — no separate ticket needed.
               </p>
+              <ul className="space-y-1.5 mb-4">
+                {["Official Volunteer Vest & ID Badge", "Full conference access during your shift", "Digital Certificate of Volunteering", "Group photo recognition"].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                    <CheckCircle className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
               <Button variant="outline" size="sm" className="border-green-400 text-green-700 hover:bg-green-100">
                 Learn About Volunteering
               </Button>

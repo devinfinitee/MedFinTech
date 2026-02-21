@@ -70,7 +70,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-lg mb-3">Contact Info</h4>
             <ul className="space-y-1.5 text-sm text-white/80">
-              <li>📍 MM2, Ikeja Airport, Lagos State, Nigeria 🇳🇬</li>
+              <li>📍 The Assembly, Ogbomoso, Oyo State, Nigeria 🇳🇬</li>
               <li>📞 {whatsappConfig.phoneNumber}</li>
               <li>📧 {defaultContactEmail}</li>
             </ul>
@@ -84,7 +84,17 @@ export default function Footer() {
 
         <div className="border-t border-white/10 pt-4 text-center text-xs md:text-sm text-white/60">
           <p>&copy; 2026 MEDFINTECH Conference. All rights reserved.</p>
-          <p className="mt-2 text-xs text-white/40">Designed & Developed by <span className="text-primary font-semibold">Infinite</span></p>
+          <p className="mt-1">
+            Designed &amp; Developed by{" "}
+            <a
+              href="https://wa.me/2348104639067"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary font-semibold hover:text-primary/80 transition-colors"
+            >
+              Infinite™
+            </a>
+          </p>
         </div>
       </div>
     </footer>

@@ -10,7 +10,6 @@ import { PalmPayService, getSuccessUrl } from '@/lib/palmpay';
 import palmpayLogo from "../assets/palmpay-pay.PNG";
 
 export default function Registration() {
-  const isHomePage = false;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -87,7 +86,7 @@ export default function Registration() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-16 md:pt-20">
+    <div className="min-h-screen bg-slate-50 pt-24 md:pt-28">
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
@@ -252,9 +251,9 @@ export default function Registration() {
                         <SelectValue placeholder="Select ticket type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="student">Student Pass — ₦10,000</SelectItem>
-                        <SelectItem value="general">General Admission — ₦20,000</SelectItem>
-                        <SelectItem value="vip">VIP Access — ₦35,000</SelectItem>
+                        <SelectItem value="student">Student General Admission — ₦1,000</SelectItem>
+                        <SelectItem value="general">General Admission — ₦5,000</SelectItem>
+                        <SelectItem value="vip">VIP Access — ₦15,000</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

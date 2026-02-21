@@ -205,12 +205,12 @@ export default function Home() {
 
 
       {/* Conference Photo Strip */}
-      <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src={img2} alt="MEDFINTECH Conference" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 via-slate-900/30 to-slate-900/70 flex items-center justify-center">
+      <div className="relative h-56 md:h-72 overflow-hidden">
+        <img src={img2} alt="MEDFINTECH Conference" className="w-full h-full object-cover object-center" />
+        <div className="absolute inset-0 bg-slate-900/65 flex items-center justify-center">
           <div className="text-center text-white px-4">
             <p className="text-sm uppercase tracking-widest text-primary font-semibold mb-2">MEDFINTECH 2026</p>
-            <h3 className="text-2xl md:text-4xl font-extrabold">Africa's Healthcare Revolution Starts Here</h3>
+            <h3 className="text-2xl md:text-4xl font-extrabold drop-shadow-lg">Africa's Healthcare Revolution Starts Here</h3>
           </div>
         </div>
       </div>
@@ -289,9 +289,9 @@ export default function Home() {
                 <img
                   src={img3}
                   alt="Conference atmosphere"
-                  className="absolute inset-0 w-full h-full object-cover opacity-70"
+                  className="absolute inset-0 w-full h-full object-cover object-center opacity-40"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/60 to-slate-900/10" />
               </div>
             </div>
           </div>

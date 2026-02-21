@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
             <MedFintechLogo
-              className="mb-4 scale-[1.8] origin-left"
+              className="mb-4"
             />
             <p className="text-white/80 text-sm mb-4">
               Reimagining Healthcare Access Through Financial Innovation. Join us for the official launch of Africa's largest telemedicine platform.

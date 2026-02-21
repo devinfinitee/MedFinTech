@@ -55,10 +55,8 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-20 md:h-24 px-3 sm:px-4 md:px-6 lg:px-8">
           <Link href="/" data-testid="link-home" className="flex items-center flex-shrink-0">
             <EventLogo
-              className={`scale-150 md:scale-[2] lg:scale-[2.2] transition-all duration-400 ease-out will-change-transform
-                ${hasMounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}
-                ${isScrolled ? "scale-[1.4] md:scale-[1.8] lg:scale-[2]" : ""}
-                hover:scale-[1.6] md:hover:scale-[2.1] lg:hover:scale-[2.3]
+              className={`transition-opacity duration-300 ease-out
+                ${hasMounted ? "opacity-100" : "opacity-0"}
               `}
             />
           </Link>

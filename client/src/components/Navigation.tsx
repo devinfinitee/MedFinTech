@@ -52,8 +52,8 @@ export default function Navigation() {
       }`}
     >
       <div className="w-full px-0">
-        <div className="flex items-center justify-between h-20 md:h-24 px-3 sm:px-4 md:px-6 lg:px-8">
-          <Link href="/" data-testid="link-home" className="flex items-center flex-shrink-0">
+        <div className="flex items-center justify-between h-16 md:h-20 px-3 sm:px-5 md:px-6 lg:px-10">
+          <Link href="/" data-testid="link-home" className="flex items-center flex-shrink-0 mr-4 md:mr-6">
             <EventLogo
               className={`transition-opacity duration-300 ease-out
                 ${hasMounted ? "opacity-100" : "opacity-0"}
@@ -61,11 +61,11 @@ export default function Navigation() {
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-3 lg:gap-5 xl:gap-7">
+          <div className="hidden md:flex items-center gap-2 lg:gap-4 xl:gap-6 min-w-0 flex-1 justify-center">
             {navLinks.map((link) => (
               <Link key={link.path} href={link.path} data-testid={`link-${link.label.toLowerCase()}`}>
                 <span
-                  className={`text-sm lg:text-base font-semibold transition-all duration-300 cursor-pointer relative group px-1 py-2 ${
+                  className={`text-xs lg:text-sm font-semibold transition-all duration-300 cursor-pointer relative group px-1 py-2 whitespace-nowrap ${
                     location === link.path
                       ? "text-primary"
                       : "text-white/90 hover:text-primary"
@@ -82,7 +82,8 @@ export default function Navigation() {
 
           <Button
             variant="default"
-            className="hidden md:inline-flex font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
+            size="sm"
+            className="hidden md:inline-flex font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105 flex-shrink-0 ml-4 text-xs lg:text-sm px-3 lg:px-5"
             data-testid="button-register-event"
             asChild
           >
@@ -94,7 +95,7 @@ export default function Navigation() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             data-testid="button-mobile-menu"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>

@@ -84,6 +84,7 @@ export default function Footer() {
 
         <div className="border-t border-white/10 pt-4 text-center text-xs md:text-sm text-white/60">
           <p>&copy; 2026 MEDFINTECH Conference. All rights reserved.</p>
+          <p className="mt-2 text-xs text-white/40">Designed & Developed by <span className="text-primary font-semibold">Infinite</span></p>
         </div>
       </div>
     </footer>

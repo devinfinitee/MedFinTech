@@ -108,7 +108,7 @@ export default function Fleet() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-24 md:pt-28">
+    <div className="min-h-screen pt-16 md:pt-20">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-24">
         <div ref={headerRef} className="text-center mb-12">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4 opacity-0">Our Exclusive Fleet</h1>

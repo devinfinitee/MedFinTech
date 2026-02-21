@@ -111,7 +111,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white pt-24 md:pt-28 pb-16 md:pb-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white pt-20 md:pt-24 pb-16 md:pb-24 overflow-hidden">
         {/* Background image overlay */}
         <div className="absolute inset-0 z-0">
           <img src={img1} alt="MEDFINTECH Conference" className="w-full h-full object-cover opacity-15" />
@@ -204,8 +204,8 @@ export default function Home() {
       </section>
 
       {/* Conference Photo Strip */}
-      <div className="relative h-44 sm:h-56 md:h-72 overflow-hidden">
-        <img src={img2} alt="MEDFINTECH Conference" className="w-full h-full object-cover object-center" />
+      <div className="relative h-56 sm:h-64 md:h-80 lg:h-96 overflow-hidden">
+        <img src={img2} alt="MEDFINTECH Conference" className="w-full h-full object-cover object-center brightness-90" />
         <div className="absolute inset-0 bg-slate-900/65 flex items-center justify-center">
           <div className="text-center text-white px-4">
             <p className="text-xs sm:text-sm uppercase tracking-widest text-primary font-semibold mb-2">MEDFINTECH 2026</p>
@@ -284,9 +284,9 @@ export default function Home() {
                 <img
                   src={img3}
                   alt="Conference atmosphere"
-                  className="absolute inset-0 w-full h-full object-cover object-center opacity-40"
+                  className="absolute inset-0 w-full h-full object-cover object-center brightness-95"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/60 to-slate-900/10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-slate-900/20" />
               </div>
             </div>
           </div>
@@ -310,11 +310,11 @@ export default function Home() {
                 key={index}
                 className={`scroll-animate stagger-${Math.min(index + 1, 5)} bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-slate-100 text-center`}
               >
-                <div className="aspect-square overflow-hidden">
+                <div className="aspect-[3/4] overflow-hidden bg-slate-100">
                   <img
                     src={speaker.image}
                     alt={speaker.name}
-                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-3 sm:p-4">
@@ -383,11 +383,11 @@ export default function Home() {
                 key={index}
                 className={`scroll-animate stagger-${index + 1} bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-slate-100`}
               >
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[3/4] overflow-hidden bg-slate-100">
                   <img
                     src={royal.image}
                     alt={royal.name}
-                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-4 sm:p-6 text-center">

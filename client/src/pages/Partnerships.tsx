@@ -55,7 +55,7 @@ export default function Partnerships() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 md:pt-28">
+    <div className="min-h-screen bg-slate-50 pt-16 md:pt-20">
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">

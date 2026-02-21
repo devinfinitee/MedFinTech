@@ -20,7 +20,7 @@ export default function EventLogo({
       <img 
         src={logo} 
         alt="MEDFINTECH Conference 2026" 
-        className="h-12 md:h-14 w-auto max-w-[140px] md:max-w-[180px] object-contain"
+        className="h-14 md:h-16 lg:h-20 w-auto max-w-[160px] md:max-w-[200px] lg:max-w-[240px] object-contain"
       />
     </div>
   );

@@ -65,7 +65,7 @@ export default function Navigation() {
             {navLinks.map((link) => (
               <Link key={link.path} href={link.path} data-testid={`link-${link.label.toLowerCase()}`}>
                 <span
-                  className={`text-xs lg:text-sm font-semibold transition-all duration-300 cursor-pointer relative group px-1 py-2 whitespace-nowrap ${
+                  className={`text-sm lg:text-base font-semibold transition-all duration-300 cursor-pointer relative group px-1 py-2 whitespace-nowrap ${
                     location === link.path
                       ? "text-primary"
                       : "text-white/90 hover:text-primary"
@@ -83,7 +83,7 @@ export default function Navigation() {
           <Button
             variant="default"
             size="sm"
-            className="hidden md:inline-flex font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105 flex-shrink-0 ml-4 text-xs lg:text-sm px-3 lg:px-5"
+            className="hidden md:inline-flex font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105 flex-shrink-0 ml-4 text-sm lg:text-base px-4 lg:px-6"
             data-testid="button-register-event"
             asChild
           >
@@ -106,7 +106,7 @@ export default function Navigation() {
             {navLinks.map((link) => (
               <Link key={link.path} href={link.path}>
                 <div
-                  className={`block py-3 px-4 rounded-lg text-sm font-semibold transition-all ${
+                  className={`block py-3 px-4 rounded-lg text-base font-semibold transition-all ${
                     location === link.path 
                       ? "text-primary bg-primary/10" 
                       : "text-white hover:text-primary hover:bg-white/5"

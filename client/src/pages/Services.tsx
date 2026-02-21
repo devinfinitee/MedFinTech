@@ -62,7 +62,7 @@ export default function Services() {
   ];
 
   return (
-    <div className="min-h-screen pt-24 md:pt-28">
+    <div className="min-h-screen pt-16 md:pt-20">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-24 space-y-20">
         <section className="scroll-animate">
           <div className="max-w-3xl mx-auto text-center">

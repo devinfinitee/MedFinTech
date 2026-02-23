@@ -107,7 +107,7 @@ export default function Ticketing() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 md:pt-28">
+    <div className="min-h-screen bg-slate-50 pt-20 md:pt-24">
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
@@ -178,28 +178,35 @@ export default function Ticketing() {
                 </ul>
 
                 {/* CTA Button */}
-                <Button
-                  size="sm"
-                  className={`w-full font-semibold py-3 h-auto text-xs flex flex-wrap justify-center gap-1 ${
-                    ticket.highlight
-                      ? "bg-white text-primary hover:bg-slate-100"
-                      : "bg-primary text-white hover:bg-primary/90"
-                  }`}
+                <button
                   onClick={() => handleTicketPurchase(ticket.id, ticket.amount, ticket.name)}
                   disabled={isLoading === ticket.id}
+                  className={`w-full group relative overflow-hidden rounded-xl transition-all duration-500 shadow-md hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed ${
+                    ticket.highlight
+                      ? "bg-gradient-to-r from-white via-slate-100 to-white hover:shadow-white/30"
+                      : "bg-gradient-to-r from-primary via-green-500 to-primary bg-[length:200%_100%] hover:shadow-primary/40"
+                  }`}
                 >
-                  {isLoading === ticket.id ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <img src={palmpayLogo} alt="PalmPay" className="w-4 h-4 rounded-sm object-contain" />
-                      <span>Pay with PalmPay — {ticket.price}</span>
-                    </>
-                  )}
-                </Button>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative flex items-center justify-between px-4 py-3">
+                    {isLoading === ticket.id ? (
+                      <div className={`flex items-center gap-2 mx-auto font-semibold text-xs ${ticket.highlight ? "text-primary" : "text-white"}`}>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        Processing...
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <div className={`rounded-md p-1 ${ticket.highlight ? "bg-primary/15" : "bg-white/20"}`}>
+                            <img src={palmpayLogo} alt="PalmPay" className="w-4 h-4 object-contain" />
+                          </div>
+                          <span className={`font-bold text-xs ${ticket.highlight ? "text-primary" : "text-white"}`}>Pay via PalmPay</span>
+                        </div>
+                        <span className={`font-extrabold text-xs px-2.5 py-1 rounded-lg ${ticket.highlight ? "bg-primary/15 text-primary" : "bg-white/20 text-white"}`}>{ticket.price}</span>
+                      </>
+                    )}
+                  </div>
+                </button>
               </div>
             </div>
           ))}
@@ -236,18 +243,31 @@ export default function Ticketing() {
                   </li>
                 ))}
               </ul>
-              <Button
-                size="sm"
-                className="w-full font-semibold py-3 h-auto text-xs flex flex-wrap justify-center gap-1 bg-green-600 text-white hover:bg-green-700"
+              <button
                 onClick={() => handleTicketPurchase("volunteer", 7000, "Volunteer Pass")}
                 disabled={isLoading === "volunteer"}
+                className="w-full group relative overflow-hidden rounded-xl bg-gradient-to-r from-green-600 via-green-500 to-green-600 bg-[length:200%_100%] hover:bg-right-center transition-all duration-500 shadow-md hover:shadow-green-500/40 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {isLoading === "volunteer" ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" />Processing...</>
-                ) : (
-                  <><img src={palmpayLogo} alt="PalmPay" className="w-4 h-4 rounded-sm object-contain" /><span>Pay with PalmPay — ₦7,000</span></>
-                )}
-              </Button>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative flex items-center justify-between px-4 py-3">
+                  {isLoading === "volunteer" ? (
+                    <div className="flex items-center gap-2 mx-auto text-white font-semibold text-xs">
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      Processing...
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <div className="bg-white/20 rounded-md p-1">
+                          <img src={palmpayLogo} alt="PalmPay" className="w-4 h-4 object-contain" />
+                        </div>
+                        <span className="text-white font-bold text-xs">Pay via PalmPay</span>
+                      </div>
+                      <span className="bg-white/20 text-white font-extrabold text-xs px-2.5 py-1 rounded-lg">₦7,000</span>
+                    </>
+                  )}
+                </div>
+              </button>
             </div>
           </div>
         </div>

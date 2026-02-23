@@ -11,6 +11,7 @@ import adeyeyeImage from "../assets/adeyeye-enitan.JPG";
 import obaGhandiImage from "../assets/oba-ghandi.JPG";
 import sundayOladapoImage from "../assets/sunday-oladapo.JPG";
 import ogunkolaImage from "../assets/ogunkola-ifeoluwa.jpg";
+import olusholaImage from "../assets/Olushola Adeoye.jpg";
 
 export default function SpecialGuests() {
   useEffect(() => {
@@ -24,24 +25,27 @@ export default function SpecialGuests() {
 
   const royalFathers = [
     {
-      name: "His Imperial Majesty, Oba Adeyeye Enitan Babatunde Ogunwusi, Ojaja II",
+      name: "His Imperial Majesty, Oba Adeyeye Enitan Babatunde Ogunwusi",
+      regnal: "Ojaja II",
       title: "The Ooni of Ife",
       session: "Traditional Institutions as Catalysts for Digital Health and Economic Transformation",
       time: "9:30 AM",
       image: adeyeyeImage,
-      type: "Royal Address I",
+      type: "Royal Address",
     },
     {
-      name: "His Imperial Majesty, Oba Ghandi Afolabi Oladunni Olaoye, Orumogege III",
+      name: "His Imperial Majesty, Oba Ghandi Afolabi Oladunni Olaoye",
+      regnal: "Orumogege III",
       title: "The Soun of Ogbomoso",
       session: "Empowering the Next Generation: Youth, Innovation, and the Future of Africa's Digital Economy",
       time: "9:45 AM",
       image: obaGhandiImage,
-      type: "Royal Address II",
+      type: "Royal Address",
     },
     {
-      name: "His Royal Majesty, Oba Sunday Oladapo Oyediran, Lagbami Osekun III",
-      title: "Traditional Ruler",
+      name: "His Royal Majesty, Oba Sunday Oladapo Oyediran",
+      regnal: "Lagbami Osekun III",
+      title: "Traditional Ruler, Ogbomoso",
       session: "Community Health, Financial Inclusion, and the Role of Leadership in Sustainable Development",
       time: "Royal Address",
       image: sundayOladapoImage,
@@ -90,11 +94,11 @@ export default function SpecialGuests() {
     },
     {
       name: "Olushola Adeoye",
-      title: "CEO",
-      company: "CallMate AI",
-      expertise: "AI-Driven Customer Experience in Healthcare & Fintech",
-      bio: "Specialising in SaaS, Machine Learning and AI with deep interests in Gaming and Augmented Reality Fintech.",
-      image: "OA",
+      title: "Founder & CEO",
+      company: "Callmate AI",
+      expertise: "AI-Driven Business Systems: Turning AI into Revenue-Generating Products",
+      bio: "Software engineer & ML expert. Built one of Nigeria's first cyber-link e-commerce bots; contributed to AI systems that earned Twitter ex-CEO grants. GEF 2024 winner. Exited a travel-tech AI startup in Dubai. Now building Callmate AI — an AI-powered business command centre for SMEs. Discipline: SaaS, ML & AI.",
+      image: olusholaImage,
     },
     {
       name: "Adelabu Ayodeji Adetunji",
@@ -129,7 +133,7 @@ export default function SpecialGuests() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-16 md:pt-20">
+    <div className="min-h-screen bg-slate-50 pt-20 md:pt-24">
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
@@ -164,7 +168,8 @@ export default function SpecialGuests() {
                     <img src={royal.image} alt={royal.name} className="w-full h-full object-cover" />
                   </div>
                   <span className="bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">{royal.type}</span>
-                  <h3 className="font-bold text-slate-900 text-sm leading-snug mb-1">{royal.name}</h3>
+                  <h3 className="font-bold text-slate-900 text-sm leading-snug mb-0.5">{royal.name}</h3>
+                  <p className="text-amber-600 font-bold text-sm mb-0.5">{royal.regnal}</p>
                   <p className="text-amber-700 font-semibold text-xs">{royal.title}</p>
                 </div>
                 <div className="p-5">
@@ -228,33 +233,49 @@ export default function SpecialGuests() {
 
         {/* Industry Leaders */}
         <div className="max-w-6xl mx-auto mb-16">
-          <div className="flex items-center gap-3 justify-center mb-10">
-            <Users className="w-6 h-6 text-primary" />
-            <h2 className="text-2xl font-bold text-slate-900">Industry Leaders & Experts</h2>
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-3">
+              <Users className="w-4 h-4 text-primary" />
+              <span className="text-primary text-xs font-bold uppercase tracking-widest">Panellists & Experts</span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Industry Leaders</h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {industryLeaders.map((leader, idx) => (
               <div
                 key={leader.name}
-                className={`bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col items-center text-center scroll-animate stagger-${Math.min(idx + 1, 6)}`}
+                className={`group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex scroll-animate stagger-${Math.min(idx + 1, 6)}`}
               >
-                {typeof leader.image === "string" && leader.image.length === 2 ? (
-                  <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white text-xl font-bold mb-4">
-                    {leader.image}
+                {/* Photo strip */}
+                <div className="w-28 sm:w-36 flex-shrink-0 bg-gradient-to-b from-slate-800 to-slate-900 flex flex-col items-center justify-center p-4 relative">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {typeof leader.image === "string" && leader.image.length === 2 ? (
+                    <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white text-xl font-bold ring-2 ring-primary/40">
+                      {leader.image}
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-white/20 group-hover:ring-primary/50 transition-all duration-300">
+                      <img src={leader.image as string} alt={leader.name} className="w-full h-full object-cover object-top" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 p-5 flex flex-col justify-between min-w-0">
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-tight">{leader.name}</h3>
+                    <p className="text-primary text-xs sm:text-sm font-semibold">{leader.title}</p>
+                    <p className="text-slate-400 text-xs mb-2">{leader.company}</p>
+                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">{leader.bio}</p>
                   </div>
-                ) : (
-                  <div className="w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-slate-100 shadow-sm">
-                    <img src={leader.image as string} alt={leader.name} className="w-full h-full object-cover" />
+                  <div className="mt-3">
+                    <span className="inline-flex items-center gap-1.5 bg-primary/8 border border-primary/15 text-primary text-[10px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-lg">
+                      <Mic className="w-3 h-3 flex-shrink-0" />
+                      <span className="line-clamp-1">{leader.expertise}</span>
+                    </span>
                   </div>
-                )}
-                <h3 className="font-bold text-slate-900 mb-0.5">{leader.name}</h3>
-                <p className="text-primary text-sm font-semibold mb-0.5">{leader.title}</p>
-                <p className="text-slate-400 text-xs mb-3">{leader.company}</p>
-                <p className="text-xs text-slate-500 leading-relaxed mb-3">{leader.bio}</p>
-                <span className="inline-block bg-primary/10 text-primary text-xs font-medium px-3 py-1 rounded-full">
-                  {leader.expertise}
-                </span>
+                </div>
               </div>
             ))}
           </div>

@@ -117,7 +117,7 @@ export default function Accommodation() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-16 md:pt-20">
+    <div className="min-h-screen bg-slate-50 pt-20 md:pt-24">
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
@@ -203,24 +203,31 @@ export default function Accommodation() {
                 </div>
 
                 {/* CTA */}
-                <Button
-                  className="w-full font-semibold"
-                  size="lg"
+                <button
                   onClick={() => handleHotelBooking(hotel.id, hotel.amount, hotel.name)}
                   disabled={isLoading === hotel.id}
+                  className="w-full group relative overflow-hidden rounded-xl bg-gradient-to-r from-primary via-green-500 to-primary bg-[length:200%_100%] hover:bg-right-center transition-all duration-500 shadow-lg hover:shadow-primary/40 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {isLoading === hotel.id ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <img src={palmpayLogo} alt="PalmPay" className="w-5 h-5 mr-2 rounded-sm object-contain" />
-                      Pay with PalmPay — {hotel.price}/night
-                    </>
-                  )}
-                </Button>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative flex items-center justify-between px-5 py-4">
+                    {isLoading === hotel.id ? (
+                      <div className="flex items-center gap-2 mx-auto text-white font-semibold text-sm">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Processing...
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <div className="bg-white/20 rounded-lg p-1.5">
+                            <img src={palmpayLogo} alt="PalmPay" className="w-5 h-5 object-contain" />
+                          </div>
+                          <span className="text-white font-bold text-sm">Pay with PalmPay</span>
+                        </div>
+                        <span className="bg-white/20 text-white font-extrabold text-sm px-3 py-1 rounded-lg">{hotel.price}<span className="font-normal text-white/80 text-xs ml-1">/night</span></span>
+                      </>
+                    )}
+                  </div>
+                </button>
               </div>
             </div>
           ))}

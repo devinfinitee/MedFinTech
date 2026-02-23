@@ -8,10 +8,6 @@ import {
   Play, Download, Star, Zap
 } from "lucide-react";
 import lexiLogo from "@/assets/Lexi Ai No bg.png";
-import lexiConvo1 from "@/assets/lexi-ai-convo 1.PNG";
-import lexiConvo2 from "@/assets/lexi-ai-convo 2.PNG";
-import lexiConvo3 from "@/assets/lexi-ai-convo 3.PNG";
-import lexiConvo4 from "@/assets/lexi-ai-convo 4.PNG";
 import lexiConvo5 from "@/assets/lexi-ai-convo 5.PNG";
 import lexiConvo6 from "@/assets/lexi-ai-convo 6.PNG";
 import lexiConvo7 from "@/assets/lexi-ai-convo 7.PNG";
@@ -22,7 +18,7 @@ export default function MedxVerseAppLaunch() {
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target); } }),
       { threshold: 0.1 }
-    );
+    );  
     document.querySelectorAll('.scroll-animate, .fade-up, .slide-left, .slide-right, .scale-in').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
@@ -62,7 +58,7 @@ export default function MedxVerseAppLaunch() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-16 md:pt-20">
+    <div className="min-h-screen bg-slate-50 pt-20 md:pt-24">
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
@@ -172,18 +168,23 @@ export default function MedxVerseAppLaunch() {
 
           {/* Screenshot grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {[lexiConvo1, lexiConvo2, lexiConvo3, lexiConvo4, lexiConvo5, lexiConvo6, lexiConvo7, lexiConvo8].map((src, i) => (
+            {[
+              { src: lexiConvo5, chatNumber: 5 },
+              { src: lexiConvo6, chatNumber: 6 },
+              { src: lexiConvo7, chatNumber: 7 },
+              { src: lexiConvo8, chatNumber: 8 },
+            ].map(({ src, chatNumber }, i) => (
               <div
                 key={i}
                 className={`scroll-animate stagger-${Math.min(i + 1, 6)} bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group`}
               >
                 <div className="bg-slate-100 px-3 py-2 flex items-center gap-2 border-b border-slate-200">
                   <img src={lexiLogo} alt="Lexi" className="h-5 w-auto object-contain" />
-                  <span className="text-xs font-semibold text-slate-600">Lexi AI · Chat {i + 1}</span>
+                  <span className="text-xs font-semibold text-slate-600">Lexi AI · Chat {chatNumber}</span>
                 </div>
                 <img
                   src={src}
-                  alt={`Lexi AI conversation ${i + 1}`}
+                  alt={`Lexi AI conversation ${chatNumber}`}
                   className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>

@@ -52,7 +52,7 @@ export default function Navigation() {
       }`}
     >
       <div className="w-full px-0">
-        <div className="flex items-center justify-between h-16 md:h-20 px-3 sm:px-5 md:px-6 lg:px-10">
+        <div className="flex items-center justify-between h-20 md:h-24 px-3 sm:px-5 md:px-6 lg:px-10">
           <Link href="/" data-testid="link-home" className="flex items-center flex-shrink-0 mr-4 md:mr-6">
             <EventLogo
               className={`transition-opacity duration-300 ease-out
@@ -61,11 +61,11 @@ export default function Navigation() {
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-2 lg:gap-4 xl:gap-6 min-w-0 flex-1 justify-center">
+          <div className="hidden md:flex items-center gap-1 lg:gap-3 xl:gap-5 min-w-0 flex-1 justify-center">
             {navLinks.map((link) => (
               <Link key={link.path} href={link.path} data-testid={`link-${link.label.toLowerCase()}`}>
                 <span
-                  className={`text-sm lg:text-base font-semibold transition-all duration-300 cursor-pointer relative group px-1 py-2 whitespace-nowrap ${
+                  className={`text-[11px] lg:text-xs xl:text-sm font-semibold transition-all duration-300 cursor-pointer relative group px-1 py-2 whitespace-nowrap ${
                     location === link.path
                       ? "text-primary"
                       : "text-white/90 hover:text-primary"
@@ -83,7 +83,7 @@ export default function Navigation() {
           <Button
             variant="default"
             size="sm"
-            className="hidden md:inline-flex font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105 flex-shrink-0 ml-4 text-sm lg:text-base px-4 lg:px-6"
+            className="hidden md:inline-flex font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105 flex-shrink-0 ml-2 text-[11px] lg:text-xs xl:text-sm px-2 lg:px-4"
             data-testid="button-register-event"
             asChild
           >
@@ -106,7 +106,7 @@ export default function Navigation() {
             {navLinks.map((link) => (
               <Link key={link.path} href={link.path}>
                 <div
-                  className={`block py-3 px-4 rounded-lg text-base font-semibold transition-all ${
+                  className={`block py-3 px-4 rounded-lg text-sm font-semibold transition-all ${
                     location === link.path 
                       ? "text-primary bg-primary/10" 
                       : "text-white hover:text-primary hover:bg-white/5"

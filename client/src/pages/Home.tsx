@@ -12,6 +12,7 @@ import ayodejiImage from "@/assets/ayodeji-adelabu.jpg";
 import obaGhandiImage from "@/assets/oba-ghandi.JPG";
 import adeyeyeImage from "@/assets/adeyeye-enitan.JPG";
 import sundayOladapoImage from "@/assets/sunday-oladapo.JPG";
+import olusholaImage from "@/assets/Olushola Adeoye.jpg";
 import {
   Calendar,
   MapPin,
@@ -76,25 +77,29 @@ export default function Home() {
     { name: "Boluwatife Agboola", title: "CEO, Torchlife Africa", image: boluwatifeImage },
     { name: "Amoo Yetunde Ololade", title: "Global Health Nurse", image: amooImage },
     { name: "Adelabu Ayodeji Adetunji", title: "SME Growth Lead, Flutterwave", image: ayodejiImage },
+    { name: "Olushola Adeoye", title: "Founder & CEO, Callmate AI", image: olusholaImage },
   ];
 
   const royalFathers = [
     {
       title: "His Imperial Majesty",
       name: "Oba Adeyeye Enitan Babatunde Ogunwusi",
-      role: "Ojaja II — The Ooni of Ife",
+      regnal: "Ojaja II",
+      role: "The Ooni of Ife",
       image: adeyeyeImage,
     },
     {
       title: "His Imperial Majesty",
       name: "Oba Ghandi Afolabi Oladunni Olaoye",
-      role: "Orumogege III — The Soun of Ogbomoso",
+      regnal: "Orumogege III",
+      role: "The Soun of Ogbomoso",
       image: obaGhandiImage,
     },
     {
       title: "His Royal Majesty",
       name: "Oba Sunday Oladapo Oyediran",
-      role: "Lagbami Osekun III",
+      regnal: "Lagbami Osekun III",
+      role: "Traditional Ruler, Ogbomoso",
       image: sundayOladapoImage,
     },
   ];
@@ -111,7 +116,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white pt-20 md:pt-24 pb-16 md:pb-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white pt-24 md:pt-28 pb-16 md:pb-24 overflow-hidden">
         {/* Background image overlay */}
         <div className="absolute inset-0 z-0">
           <img src={img1} alt="MEDFINTECH Conference" className="w-full h-full object-cover opacity-15" />
@@ -204,8 +209,8 @@ export default function Home() {
       </section>
 
       {/* Conference Photo Strip */}
-      <div className="relative h-56 sm:h-64 md:h-80 lg:h-96 overflow-hidden">
-        <img src={img2} alt="MEDFINTECH Conference" className="w-full h-full object-cover object-center brightness-90" />
+      <div className="relative h-44 sm:h-56 md:h-72 overflow-hidden">
+        <img src={img2} alt="MEDFINTECH Conference" className="w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-slate-900/65 flex items-center justify-center">
           <div className="text-center text-white px-4">
             <p className="text-xs sm:text-sm uppercase tracking-widest text-primary font-semibold mb-2">MEDFINTECH 2026</p>
@@ -284,9 +289,9 @@ export default function Home() {
                 <img
                   src={img3}
                   alt="Conference atmosphere"
-                  className="absolute inset-0 w-full h-full object-cover object-center brightness-95"
+                  className="absolute inset-0 w-full h-full object-cover object-center opacity-40"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-slate-900/20" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/60 to-slate-900/10" />
               </div>
             </div>
           </div>
@@ -304,17 +309,17 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-5 md:gap-6 mb-8 md:mb-10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-5 mb-8 md:mb-10">
             {speakers.map((speaker, index) => (
               <div
                 key={index}
                 className={`scroll-animate stagger-${Math.min(index + 1, 5)} bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-slate-100 text-center`}
               >
-                <div className="aspect-[3/4] overflow-hidden bg-slate-100">
+                <div className="aspect-square overflow-hidden">
                   <img
                     src={speaker.image}
                     alt={speaker.name}
-                    className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-3 sm:p-4">
@@ -383,19 +388,20 @@ export default function Home() {
                 key={index}
                 className={`scroll-animate stagger-${index + 1} bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-slate-100`}
               >
-                <div className="aspect-[3/4] overflow-hidden bg-slate-100">
+                <div className="aspect-[4/3] overflow-hidden">
                   <img
                     src={royal.image}
                     alt={royal.name}
-                    className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-4 sm:p-6 text-center">
-                  <span className="inline-block bg-primary/10 text-primary text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2 sm:mb-3">
+                  <span className="inline-block bg-primary/10 text-primary text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
                     {royal.title}
                   </span>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-snug mb-1">{royal.name}</h3>
-                  <p className="text-slate-500 text-xs sm:text-sm">{royal.role}</p>
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-snug mb-0.5">{royal.name}</h3>
+                  <p className="text-amber-600 font-bold text-xs sm:text-sm mb-0.5">{royal.regnal}</p>
+                  <p className="text-slate-500 text-[10px] sm:text-xs">{royal.role}</p>
                 </div>
               </div>
             ))}

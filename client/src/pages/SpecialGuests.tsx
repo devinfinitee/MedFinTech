@@ -57,7 +57,7 @@ export default function SpecialGuests() {
     {
       name: "Amos Franklin Momodu",
       title: "Chief Executive Officer",
-      company: "MedxVerse",
+      company: "HealthTok",
       bio: "Passionate about leveraging technology and AI to develop innovative solutions that address real-world challenges and drive meaningful social impact.",
       session: "AI, Data, and Trust: Building Secure Digital Health Systems in Africa",
       time: "10:00 AM",
@@ -117,11 +117,11 @@ export default function SpecialGuests() {
       image: amooImage,
     },
     {
-      name: "Ogunkola Ifeoluwa E.",
-      title: "Master of Ceremonies",
+      name: "Ogunkola Ifeoluwa Esther",
+      title: "Professional Event Compere & Media Consultant",
       company: "Hadassah — The Compere Without Comparison",
-      expertise: "Conference Compere & Event Hosting",
-      bio: "Premier conference host bringing energy, expertise, and elegance to Africa's biggest innovation stages.",
+      expertise: "Strategic Communications & Event Hosting",
+      bio: "Strategic communications expert and media consultant who transforms ordinary events into extraordinary experiences. Known for her commanding stage presence and articulate delivery, she has hosted for the UN Population Fund, Cybersafe Foundation, LinkedIn Local Nigeria, Ikoyi Club 1938, Tech Revolution Africa, and many top-tier organisations — bringing confidence, class, and precision to every platform.",
       image: ogunkolaImage,
     },
   ];

@@ -5,7 +5,6 @@ import { Link } from "wouter";
 import img2 from "@/assets/img-2.jpg";
 
 export default function EventDetails() {
-  const isHomePage = false;
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target); } }),
@@ -54,7 +53,7 @@ export default function EventDetails() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-16 md:pt-20">
+    <div className="min-h-screen bg-slate-50 pt-24 md:pt-28">
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20 relative overflow-hidden">

@@ -72,7 +72,7 @@ export default function Home() {
   ];
 
   const speakers = [
-    { name: "Amos Franklin Momodu", title: "CEO, MedxVerse", image: amosImage },
+    { name: "Amos Franklin Momodu", title: "CEO, HealthTok", image: amosImage },
     { name: "Dr. Zainab Abdulsalam", title: "Medical Doctor & Digital Health Strategist", image: zainabImage },
     { name: "Boluwatife Agboola", title: "CEO, Torchlife Africa", image: boluwatifeImage },
     { name: "Amoo Yetunde Ololade", title: "Global Health Nurse", image: amooImage },

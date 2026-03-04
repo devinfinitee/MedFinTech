@@ -14,6 +14,7 @@ import MedxVerseAppLaunch from "@/pages/MedxVerseAppLaunch";
 import Partnerships from "@/pages/Partnerships";
 import SpecialGuests from "@/pages/SpecialGuests";
 import PaymentSuccess from "@/pages/PaymentSuccess";
+import PaymentSuccessTest from "@/pages/PaymentSuccessTest";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/partnerships" component={Partnerships} />
       <Route path="/special-guests" component={SpecialGuests} />
       <Route path="/payment-success" component={PaymentSuccess} />
+      <Route path="/payment-success-test" component={PaymentSuccessTest} />
       <Route component={NotFound} />
     </Switch>
   );

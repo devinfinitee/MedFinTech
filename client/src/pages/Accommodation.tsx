@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Hotel, MapPin, Star, Loader2, Phone, Mail, CheckCircle } from "lucide-react";
-import { PalmPayService, getSuccessUrl } from '@/lib/palmpay';
-import palmpayLogo from "../assets/palmpay-pay.PNG";
+import { PaystackService, getSuccessUrl } from '@/lib/paystack';
+import paystackLogo from "../assets/paystack.PNG";
 
 export default function Accommodation() {
   const [isLoading, setIsLoading] = useState<string | null>(null);
@@ -99,7 +99,7 @@ export default function Accommodation() {
 
     setIsLoading(hotelId);
     try {
-      const paymentResponse = await PalmPayService.initializePayment({
+      const paymentResponse = await PaystackService.initializePayment({
         amount,
         email,
         phone,
@@ -107,7 +107,7 @@ export default function Accommodation() {
         itemType: `Hotel Accommodation - ${hotelName} (${checkIn} to ${checkOut})`,
         redirectUrl: getSuccessUrl('accommodation', hotelId)
       });
-      PalmPayService.redirectToPayment(paymentResponse.paymentUrl);
+      PaystackService.redirectToPayment(paymentResponse.paymentUrl);
     } catch (error) {
       console.error('Booking error:', error);
       alert('Hotel booking failed. Please try again.');
@@ -219,9 +219,9 @@ export default function Accommodation() {
                       <>
                         <div className="flex items-center gap-3">
                           <div className="bg-white/20 rounded-lg p-1.5">
-                            <img src={palmpayLogo} alt="PalmPay" className="w-5 h-5 object-contain" />
+                            <img src={paystackLogo} alt="Paystack" className="w-5 h-5 object-contain" />
                           </div>
-                          <span className="text-white font-bold text-sm">Pay with PalmPay</span>
+                          <span className="text-white font-bold text-sm">Pay with Paystack</span>
                         </div>
                         <span className="bg-white/20 text-white font-extrabold text-sm px-3 py-1 rounded-lg">{hotel.price}<span className="font-normal text-white/80 text-xs ml-1">/night</span></span>
                       </>

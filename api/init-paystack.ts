@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 // Serverless function to initialize a Paystack payment
-// Expects POST body with: { amount, currency, email, phone, name, txRef, redirectUrl }
+// Expects POST body with: { amount, currency, email, phone, name, txRef, redirectUrl, itemType }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -14,9 +14,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: "Paystack secret key not configured" });
   }
 
-  const { amount, currency, email, phone, name, txRef, redirectUrl } = req.body || {};
+  const { amount, currency = "NGN", email, phone, name, txRef, redirectUrl, itemType } = req.body || {};
 
-  if (!amount || !currency || !email || !name || !txRef || !redirectUrl) {
+  if (!amount || !email || !name || !txRef || !redirectUrl) {
     return res.status(400).json({ error: "Missing required payment fields" });
   }
 
@@ -40,7 +40,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             {
               display_name: "Service",
               variable_name: "service",
-              value: "AirCambridge Passport Express"
+              value: itemType || "MEDFINTECH Conference 2026"
+            },
+            {
+              display_name: "Conference Date",
+              variable_name: "conference_date",
+              value: "7th March 2026"
+            },
+            {
+              display_name: "Venue",
+              variable_name: "venue",
+              value: "The Assembly, Ogbomoso, Oyo State"
             }
           ]
         },

@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserPlus, Award, CheckCircle, Loader2, AlertCircle, Calendar, MapPin, Clock } from "lucide-react";
-import { PalmPayService, getSuccessUrl } from '@/lib/palmpay';
-import palmpayLogo from "../assets/palmpay-pay.PNG";
+import { PaystackService, getSuccessUrl } from '@/lib/paystack';
+import paystackLogo from "../assets/paystack.PNG";
 
 export default function Registration() {
   const [formData, setFormData] = useState({
@@ -43,14 +43,14 @@ export default function Registration() {
     setIsLoading(true);
 
     try {
-      const pricing = PalmPayService.getTicketPricing();
+      const pricing = PaystackService.getTicketPricing();
       const ticketPricing = pricing[formData.ticketType as keyof typeof pricing];
 
       if (!ticketPricing) {
         throw new Error('Invalid ticket type selected');
       }
 
-      const paymentResponse = await PalmPayService.initializePayment({
+      const paymentResponse = await PaystackService.initializePayment({
         amount: ticketPricing.amount,
         email: formData.email,
         phone: formData.phone,
@@ -59,7 +59,7 @@ export default function Registration() {
         redirectUrl: getSuccessUrl('ticket', formData.ticketType)
       });
 
-      PalmPayService.redirectToPayment(paymentResponse.paymentUrl);
+      PaystackService.redirectToPayment(paymentResponse.paymentUrl);
     } catch (error) {
       console.error('Registration error:', error);
       alert('Registration failed. Please try again.');
@@ -285,9 +285,9 @@ export default function Registration() {
                         <>
                           <div className="flex items-center gap-3">
                             <div className="bg-white/20 rounded-lg p-1.5">
-                              <img src={palmpayLogo} alt="PalmPay" className="w-5 h-5 object-contain" />
+                              <img src={paystackLogo} alt="Paystack" className="w-5 h-5 object-contain" />
                             </div>
-                            <span className="text-white font-bold text-sm">Pay with PalmPay</span>
+                            <span className="text-white font-bold text-sm">Pay with Paystack</span>
                           </div>
                           <span className="bg-white/20 text-white font-extrabold text-sm px-3 py-1 rounded-lg">Register Now →</span>
                         </>

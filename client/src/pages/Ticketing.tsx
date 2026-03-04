@@ -1,13 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Ticket, CheckCircle, Clock, Star, Users, Award, AlertTriangle, Loader2 } from "lucide-react";
-import { PalmPayService, getSuccessUrl } from '@/lib/palmpay';
-import palmpayLogo from "../assets/palmpay-pay.PNG";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Ticket, CheckCircle, Clock, Star, Users, Award, AlertTriangle, Loader2, User, Mail, Phone, ShieldCheck } from "lucide-react";
+import { PaystackService, getSuccessUrl } from '@/lib/paystack';
+import paystackLogo from "../assets/paystack.PNG";
+
+interface SelectedTicket {
+  id: string;
+  name: string;
+  amount: number;
+  price: string;
+}
 
 export default function Ticketing() {
-  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<SelectedTicket | null>(null);
+  const [form, setForm] = useState({ name: '', email: '', phone: '' });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -18,33 +31,45 @@ export default function Ticketing() {
     return () => observer.disconnect();
   }, []);
 
-  const handleTicketPurchase = async (ticketId: string, amount: number, ticketName: string) => {
-    const name = prompt('Enter your full name:');
-    const email = prompt('Enter your email address:');
-    const phone = prompt('Enter your phone number:');
+  const openPaymentModal = (ticket: SelectedTicket) => {
+    setSelectedTicket(ticket);
+    setForm({ name: '', email: '', phone: '' });
+    setErrors({});
+    setModalOpen(true);
+  };
 
-    if (!name || !email || !phone) {
-      alert('Please provide all required information');
-      return;
-    }
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!form.name.trim() || form.name.trim().length < 3)
+      newErrors.name = 'Please enter your full name (at least 3 characters).';
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      newErrors.email = 'Please enter a valid email address.';
+    if (!form.phone.trim() || !/^[0-9+\-\s()]{7,15}$/.test(form.phone))
+      newErrors.phone = 'Please enter a valid phone number.';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-    setIsLoading(ticketId);
-    
+  const handlePayment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedTicket || !validate()) return;
+
+    setIsLoading(true);
     try {
-      const paymentResponse = await PalmPayService.initializePayment({
-        amount,
-        email,
-        phone,
-        name,
-        itemType: `Conference Ticket - ${ticketName}`,
-        redirectUrl: getSuccessUrl('ticket', ticketId)
+      const paymentResponse = await PaystackService.initializePayment({
+        amount: selectedTicket.amount,
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        name: form.name.trim(),
+        itemType: `Conference Ticket - ${selectedTicket.name}`,
+        redirectUrl: getSuccessUrl('ticket', selectedTicket.id),
       });
-      PalmPayService.redirectToPayment(paymentResponse.paymentUrl);
+      PaystackService.redirectToPayment(paymentResponse.paymentUrl);
     } catch (error) {
       console.error('Ticket purchase error:', error);
-      alert('Ticket purchase failed. Please try again.');
+      setErrors({ submit: 'Payment initialisation failed. Please check your connection and try again.' });
     } finally {
-      setIsLoading(null);
+      setIsLoading(false);
     }
   };
 
@@ -108,6 +133,138 @@ export default function Ticketing() {
 
   return (
     <div className="min-h-screen bg-slate-50 pt-20 md:pt-24">
+
+      {/* ── Payment Details Modal ─────────────────────────────────────── */}
+      <Dialog open={modalOpen} onOpenChange={(open) => { if (!isLoading) setModalOpen(open); }}>
+        <DialogContent className="sm:max-w-md w-full p-0 overflow-hidden rounded-2xl">
+          {/* Header */}
+          <div className="bg-slate-900 px-6 py-5">
+            <div className="flex items-start justify-between">
+              <div>
+                <DialogTitle className="text-white font-bold text-lg">Complete Your Order</DialogTitle>
+                <DialogDescription className="text-slate-400 text-sm mt-1">
+                  Enter your details to proceed securely with Paystack
+                </DialogDescription>
+              </div>
+            </div>
+
+            {/* Selected ticket summary */}
+            {selectedTicket && (
+              <div className="mt-4 bg-white/10 rounded-xl px-4 py-3 flex items-center justify-between">
+                <div>
+                  <p className="text-white font-semibold text-sm">{selectedTicket.name}</p>
+                  <p className="text-slate-400 text-xs mt-0.5">MEDFINTECH CONFERENCE 2026</p>
+                </div>
+                <span className="text-green-400 font-extrabold text-xl">{selectedTicket.price}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handlePayment} noValidate className="px-6 py-6 space-y-4">
+            {/* Full Name */}
+            <div className="space-y-1.5">
+              <Label htmlFor="pay-name" className="text-sm font-medium text-slate-700">
+                Full Name <span className="text-red-500">*</span>
+              </Label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Input
+                  id="pay-name"
+                  type="text"
+                  placeholder="e.g. Adewale Okonkwo"
+                  value={form.name}
+                  onChange={(e) => { setForm(f => ({ ...f, name: e.target.value })); setErrors(er => ({ ...er, name: '' })); }}
+                  className={`pl-9 ${errors.name ? 'border-red-400 focus-visible:ring-red-300' : ''}`}
+                  disabled={isLoading}
+                />
+              </div>
+              {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+            </div>
+
+            {/* Email */}
+            <div className="space-y-1.5">
+              <Label htmlFor="pay-email" className="text-sm font-medium text-slate-700">
+                Email Address <span className="text-red-500">*</span>
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Input
+                  id="pay-email"
+                  type="email"
+                  placeholder="e.g. you@email.com"
+                  value={form.email}
+                  onChange={(e) => { setForm(f => ({ ...f, email: e.target.value })); setErrors(er => ({ ...er, email: '' })); }}
+                  className={`pl-9 ${errors.email ? 'border-red-400 focus-visible:ring-red-300' : ''}`}
+                  disabled={isLoading}
+                />
+              </div>
+              {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+            </div>
+
+            {/* Phone */}
+            <div className="space-y-1.5">
+              <Label htmlFor="pay-phone" className="text-sm font-medium text-slate-700">
+                Phone Number <span className="text-red-500">*</span>
+              </Label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Input
+                  id="pay-phone"
+                  type="tel"
+                  placeholder="e.g. 08012345678"
+                  value={form.phone}
+                  onChange={(e) => { setForm(f => ({ ...f, phone: e.target.value })); setErrors(er => ({ ...er, phone: '' })); }}
+                  className={`pl-9 ${errors.phone ? 'border-red-400 focus-visible:ring-red-300' : ''}`}
+                  disabled={isLoading}
+                />
+              </div>
+              {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+            </div>
+
+            {/* Submit error */}
+            {errors.submit && (
+              <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-red-600 text-sm">
+                {errors.submit}
+              </div>
+            )}
+
+            {/* Security note */}
+            <div className="flex items-center gap-2 bg-green-50 border border-green-100 rounded-lg px-3 py-2.5">
+              <ShieldCheck className="w-4 h-4 text-green-600 flex-shrink-0" />
+              <p className="text-xs text-green-700">Your payment is processed securely by Paystack. We never store your card details.</p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-3 pt-1">
+              <button
+                type="button"
+                onClick={() => setModalOpen(false)}
+                disabled={isLoading}
+                className="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="flex-1 group relative overflow-hidden rounded-xl bg-gradient-to-r from-primary via-green-500 to-primary bg-[length:200%_100%] py-3 text-white font-bold text-sm shadow-md hover:shadow-primary/40 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
+              >
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" /> Redirecting...
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    <img src={paystackLogo} alt="" className="w-4 h-4 object-contain" />
+                    Pay {selectedTicket?.price}
+                  </span>
+                )}
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
@@ -179,8 +336,8 @@ export default function Ticketing() {
 
                 {/* CTA Button */}
                 <button
-                  onClick={() => handleTicketPurchase(ticket.id, ticket.amount, ticket.name)}
-                  disabled={isLoading === ticket.id}
+                  onClick={() => openPaymentModal({ id: ticket.id, name: ticket.name, amount: ticket.amount, price: ticket.price })}
+                  disabled={isLoading}
                   className={`w-full group relative overflow-hidden rounded-xl transition-all duration-500 shadow-md hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed ${
                     ticket.highlight
                       ? "bg-gradient-to-r from-white via-slate-100 to-white hover:shadow-white/30"
@@ -189,7 +346,7 @@ export default function Ticketing() {
                 >
                   <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative flex items-center justify-between px-4 py-3">
-                    {isLoading === ticket.id ? (
+                    {isLoading ? (
                       <div className={`flex items-center gap-2 mx-auto font-semibold text-xs ${ticket.highlight ? "text-primary" : "text-white"}`}>
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
                         Processing...
@@ -198,9 +355,9 @@ export default function Ticketing() {
                       <>
                         <div className="flex items-center gap-2">
                           <div className={`rounded-md p-1 ${ticket.highlight ? "bg-primary/15" : "bg-white/20"}`}>
-                            <img src={palmpayLogo} alt="PalmPay" className="w-4 h-4 object-contain" />
+                            <img src={paystackLogo} alt="Paystack" className="w-4 h-4 object-contain" />
                           </div>
-                          <span className={`font-bold text-xs ${ticket.highlight ? "text-primary" : "text-white"}`}>Pay via PalmPay</span>
+                          <span className={`font-bold text-xs ${ticket.highlight ? "text-primary" : "text-white"}`}>Pay via Paystack</span>
                         </div>
                         <span className={`font-extrabold text-xs px-2.5 py-1 rounded-lg ${ticket.highlight ? "bg-primary/15 text-primary" : "bg-white/20 text-white"}`}>{ticket.price}</span>
                       </>
@@ -244,13 +401,13 @@ export default function Ticketing() {
                 ))}
               </ul>
               <button
-                onClick={() => handleTicketPurchase("volunteer", 7000, "Volunteer Pass")}
-                disabled={isLoading === "volunteer"}
+                onClick={() => openPaymentModal({ id: 'volunteer', name: 'Volunteer Pass', amount: 7000, price: '₦7,000' })}
+                disabled={isLoading}
                 className="w-full group relative overflow-hidden rounded-xl bg-gradient-to-r from-green-600 via-green-500 to-green-600 bg-[length:200%_100%] hover:bg-right-center transition-all duration-500 shadow-md hover:shadow-green-500/40 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative flex items-center justify-between px-4 py-3">
-                  {isLoading === "volunteer" ? (
+                  {isLoading ? (
                     <div className="flex items-center gap-2 mx-auto text-white font-semibold text-xs">
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
                       Processing...
@@ -259,9 +416,9 @@ export default function Ticketing() {
                     <>
                       <div className="flex items-center gap-2">
                         <div className="bg-white/20 rounded-md p-1">
-                          <img src={palmpayLogo} alt="PalmPay" className="w-4 h-4 object-contain" />
+                          <img src={paystackLogo} alt="Paystack" className="w-4 h-4 object-contain" />
                         </div>
-                        <span className="text-white font-bold text-xs">Pay via PalmPay</span>
+                        <span className="text-white font-bold text-xs">Pay via Paystack</span>
                       </div>
                       <span className="bg-white/20 text-white font-extrabold text-xs px-2.5 py-1 rounded-lg">₦7,000</span>
                     </>

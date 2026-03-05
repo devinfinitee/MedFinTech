@@ -1,11 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Hotel, MapPin, Star, Loader2, Phone, Mail, CheckCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Hotel, MapPin, Star, Loader2, Phone, Mail, CheckCircle, User, ShieldCheck, CalendarDays } from "lucide-react";
 import { PaystackService, getSuccessUrl } from '@/lib/paystack';
 import paystackLogo from "../assets/paystack.PNG";
 
+interface SelectedHotel {
+  id: string;
+  name: string;
+  amount: number;
+  price: string;
+}
+
 export default function Accommodation() {
-  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedHotel, setSelectedHotel] = useState<SelectedHotel | null>(null);
+  const [form, setForm] = useState({ name: '', email: '', phone: '', checkIn: '', checkOut: '' });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -15,6 +29,54 @@ export default function Accommodation() {
     document.querySelectorAll('.scroll-animate, .fade-up, .slide-left, .slide-right, .scale-in').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
+
+  const openBookingModal = (hotel: SelectedHotel) => {
+    setSelectedHotel(hotel);
+    setForm({ name: '', email: '', phone: '', checkIn: '', checkOut: '' });
+    setErrors({});
+    setModalOpen(true);
+  };
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!form.name.trim() || form.name.trim().length < 3)
+      newErrors.name = 'Please enter your full name (at least 3 characters).';
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      newErrors.email = 'Please enter a valid email address.';
+    if (!form.phone.trim() || !/^[0-9+\-\s()]{7,15}$/.test(form.phone))
+      newErrors.phone = 'Please enter a valid phone number.';
+    if (!form.checkIn)
+      newErrors.checkIn = 'Please select a check-in date.';
+    if (!form.checkOut)
+      newErrors.checkOut = 'Please select a check-out date.';
+    if (form.checkIn && form.checkOut && form.checkOut <= form.checkIn)
+      newErrors.checkOut = 'Check-out must be after check-in.';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handlePayment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedHotel || !validate()) return;
+
+    setIsLoading(true);
+    try {
+      const paymentResponse = await PaystackService.initializePayment({
+        amount: selectedHotel.amount,
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        name: form.name.trim(),
+        itemType: `Hotel Accommodation - ${selectedHotel.name} (${form.checkIn} to ${form.checkOut})`,
+        redirectUrl: getSuccessUrl('accommodation', selectedHotel.id),
+      });
+      PaystackService.redirectToPayment(paymentResponse.paymentUrl);
+    } catch {
+      setErrors({ submit: 'Booking initialisation failed. Please check your connection and try again.' });
+      setIsLoading(false);
+    }
+  };
 
   const hotels = [
     {
@@ -85,38 +147,173 @@ export default function Accommodation() {
     },
   ];
 
-  const handleHotelBooking = async (hotelId: string, amount: number, hotelName: string) => {
-    const name = prompt('Enter your full name:');
-    const email = prompt('Enter your email address:');
-    const phone = prompt('Enter your phone number:');
-    const checkIn = prompt('Check-in date (YYYY-MM-DD):');
-    const checkOut = prompt('Check-out date (YYYY-MM-DD):');
-
-    if (!name || !email || !phone || !checkIn || !checkOut) {
-      alert('Please provide all required information');
-      return;
-    }
-
-    setIsLoading(hotelId);
-    try {
-      const paymentResponse = await PaystackService.initializePayment({
-        amount,
-        email,
-        phone,
-        name,
-        itemType: `Hotel Accommodation - ${hotelName} (${checkIn} to ${checkOut})`,
-        redirectUrl: getSuccessUrl('accommodation', hotelId)
-      });
-      PaystackService.redirectToPayment(paymentResponse.paymentUrl);
-    } catch {
-      alert('Hotel booking failed. Please try again.');
-    } finally {
-      setIsLoading(null);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-slate-50 pt-20 md:pt-24">
+
+      {/* ── Booking Modal ──────────────────────────────────────────────── */}
+      <Dialog open={modalOpen} onOpenChange={(open) => { if (!isLoading) setModalOpen(open); }}>
+        <DialogContent className="sm:max-w-[480px] w-[calc(100%-2rem)] p-0 overflow-hidden rounded-2xl max-h-[92vh] overflow-y-auto gap-0 [&>button]:text-white [&>button]:top-4 [&>button]:right-4 [&>button:hover]:bg-white/10">
+
+          {/* Dark header */}
+          <div className="bg-slate-900 px-6 pt-5 pb-5">
+            <DialogTitle className="text-white font-bold text-lg leading-tight pr-6">Book Your Room</DialogTitle>
+            <DialogDescription className="text-slate-400 text-sm mt-1">
+              Enter your details to proceed securely with Paystack
+            </DialogDescription>
+
+            {/* Selected room pill */}
+            {selectedHotel && (
+              <div className="mt-4 bg-white/10 rounded-xl px-4 py-3 flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-white font-semibold text-sm leading-tight truncate">{selectedHotel.name}</p>
+                  <p className="text-slate-400 text-xs mt-0.5">The Willows Nest Hotel · MEDFINTECH 2026</p>
+                </div>
+                <div className="text-right flex-shrink-0">
+                  <span className="text-green-400 font-extrabold text-lg">{selectedHotel.price}</span>
+                  <p className="text-slate-400 text-xs">per night</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handlePayment} noValidate className="px-6 py-5 space-y-4 bg-white">
+
+            {/* Full Name */}
+            <div className="space-y-1.5">
+              <Label htmlFor="bk-name" className="text-sm font-medium text-slate-700">
+                Full Name <span className="text-red-500">*</span>
+              </Label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <Input
+                  id="bk-name" type="text" placeholder="e.g. Adewale Okonkwo"
+                  value={form.name}
+                  onChange={(e) => { setForm(f => ({ ...f, name: e.target.value })); setErrors(er => ({ ...er, name: '' })); }}
+                  className={`pl-9 h-11 ${errors.name ? 'border-red-400 focus-visible:ring-red-300' : 'border-slate-200'}`}
+                  disabled={isLoading} autoComplete="name"
+                />
+              </div>
+              {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+            </div>
+
+            {/* Email */}
+            <div className="space-y-1.5">
+              <Label htmlFor="bk-email" className="text-sm font-medium text-slate-700">
+                Email Address <span className="text-red-500">*</span>
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <Input
+                  id="bk-email" type="email" placeholder="e.g. you@email.com"
+                  value={form.email}
+                  onChange={(e) => { setForm(f => ({ ...f, email: e.target.value })); setErrors(er => ({ ...er, email: '' })); }}
+                  className={`pl-9 h-11 ${errors.email ? 'border-red-400 focus-visible:ring-red-300' : 'border-slate-200'}`}
+                  disabled={isLoading} autoComplete="email"
+                />
+              </div>
+              {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+            </div>
+
+            {/* Phone */}
+            <div className="space-y-1.5">
+              <Label htmlFor="bk-phone" className="text-sm font-medium text-slate-700">
+                Phone Number <span className="text-red-500">*</span>
+              </Label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <Input
+                  id="bk-phone" type="tel" placeholder="e.g. 08012345678"
+                  value={form.phone}
+                  onChange={(e) => { setForm(f => ({ ...f, phone: e.target.value })); setErrors(er => ({ ...er, phone: '' })); }}
+                  className={`pl-9 h-11 ${errors.phone ? 'border-red-400 focus-visible:ring-red-300' : 'border-slate-200'}`}
+                  disabled={isLoading} autoComplete="tel"
+                />
+              </div>
+              {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+            </div>
+
+            {/* Check-in / Check-out */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="bk-checkin" className="text-sm font-medium text-slate-700">
+                  Check-in <span className="text-red-500">*</span>
+                </Label>
+                <div className="relative">
+                  <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  <Input
+                    id="bk-checkin" type="date" min={today}
+                    value={form.checkIn}
+                    onChange={(e) => { setForm(f => ({ ...f, checkIn: e.target.value })); setErrors(er => ({ ...er, checkIn: '' })); }}
+                    className={`pl-9 h-11 ${errors.checkIn ? 'border-red-400 focus-visible:ring-red-300' : 'border-slate-200'}`}
+                    disabled={isLoading}
+                  />
+                </div>
+                {errors.checkIn && <p className="text-red-500 text-xs">{errors.checkIn}</p>}
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="bk-checkout" className="text-sm font-medium text-slate-700">
+                  Check-out <span className="text-red-500">*</span>
+                </Label>
+                <div className="relative">
+                  <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  <Input
+                    id="bk-checkout" type="date" min={form.checkIn || today}
+                    value={form.checkOut}
+                    onChange={(e) => { setForm(f => ({ ...f, checkOut: e.target.value })); setErrors(er => ({ ...er, checkOut: '' })); }}
+                    className={`pl-9 h-11 ${errors.checkOut ? 'border-red-400 focus-visible:ring-red-300' : 'border-slate-200'}`}
+                    disabled={isLoading}
+                  />
+                </div>
+                {errors.checkOut && <p className="text-red-500 text-xs">{errors.checkOut}</p>}
+              </div>
+            </div>
+
+            {/* Submit error */}
+            {errors.submit && (
+              <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-red-600 text-sm">
+                {errors.submit}
+              </div>
+            )}
+
+            {/* Security note */}
+            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-xl px-3.5 py-3">
+              <ShieldCheck className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-green-700 leading-relaxed">Your booking is processed securely by Paystack. We never store your card details.</p>
+            </div>
+
+            <div className="border-t border-slate-100" />
+
+            {/* Actions */}
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setModalOpen(false)}
+                disabled={isLoading}
+                className="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="flex-1 group relative overflow-hidden rounded-xl bg-gradient-to-r from-primary via-green-500 to-primary bg-[length:200%_100%] py-3 text-white font-bold text-sm shadow-md hover:shadow-primary/40 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
+              >
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" /> Redirecting to Paystack…
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    <img src={paystackLogo} alt="" className="w-4 h-4 object-contain brightness-0 invert" />
+                    Pay {selectedHotel?.price}
+                  </span>
+                )}
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Page Header */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 md:py-20">
@@ -203,16 +400,16 @@ export default function Accommodation() {
 
                 {/* CTA */}
                 <button
-                  onClick={() => handleHotelBooking(hotel.id, hotel.amount, hotel.name)}
-                  disabled={isLoading === hotel.id}
+                  onClick={() => openBookingModal({ id: hotel.id, name: hotel.name, amount: hotel.amount, price: hotel.price })}
+                  disabled={isLoading}
                   className="w-full group relative overflow-hidden rounded-xl bg-gradient-to-r from-primary via-green-500 to-primary bg-[length:200%_100%] hover:bg-right-center transition-all duration-500 shadow-lg hover:shadow-primary/40 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative flex items-center justify-between px-5 py-4">
-                    {isLoading === hotel.id ? (
+                    {isLoading ? (
                       <div className="flex items-center gap-2 mx-auto text-white font-semibold text-sm">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Processing...
+                        Processing…
                       </div>
                     ) : (
                       <>

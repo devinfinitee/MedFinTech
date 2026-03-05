@@ -54,8 +54,8 @@ export default function PassportSuccess() {
       link.href = dataUrl;
       link.download = `aircambridge-passport-receipt-${txRef || Date.now()}.png`;
       link.click();
-    } catch (error) {
-      console.error("Error generating image receipt", error);
+    } catch {
+      // silent — user can retry
     } finally {
       setIsDownloadingImage(false);
     }
@@ -136,8 +136,8 @@ export default function PassportSuccess() {
       link.download = `aircambridge-passport-receipt-${txRef || Date.now()}.pdf`;
       link.click();
       URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error generating PDF receipt", error);
+    } catch {
+      // silent — user can retry
     } finally {
       setIsDownloadingPdf(false);
     }

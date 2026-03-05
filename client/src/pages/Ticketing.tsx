@@ -65,10 +65,8 @@ export default function Ticketing() {
         redirectUrl: getSuccessUrl('ticket', selectedTicket.id),
       });
       PaystackService.redirectToPayment(paymentResponse.paymentUrl);
-    } catch (error) {
-      console.error('Ticket purchase error:', error);
+    } catch {
       setErrors({ submit: 'Payment initialisation failed. Please check your connection and try again.' });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -136,47 +134,44 @@ export default function Ticketing() {
 
       {/* ── Payment Details Modal ─────────────────────────────────────── */}
       <Dialog open={modalOpen} onOpenChange={(open) => { if (!isLoading) setModalOpen(open); }}>
-        <DialogContent className="sm:max-w-md w-full p-0 overflow-hidden rounded-2xl">
+        <DialogContent className="sm:max-w-[440px] w-[calc(100%-2rem)] p-0 overflow-hidden rounded-2xl max-h-[90vh] overflow-y-auto gap-0 [&>button]:text-white [&>button]:top-4 [&>button]:right-4 [&>button:hover]:bg-white/10">
           {/* Header */}
-          <div className="bg-slate-900 px-6 py-5">
-            <div className="flex items-start justify-between">
-              <div>
-                <DialogTitle className="text-white font-bold text-lg">Complete Your Order</DialogTitle>
-                <DialogDescription className="text-slate-400 text-sm mt-1">
-                  Enter your details to proceed securely with Paystack
-                </DialogDescription>
-              </div>
-            </div>
+          <div className="bg-slate-900 px-6 pt-5 pb-5">
+            <DialogTitle className="text-white font-bold text-lg leading-tight pr-6">Complete Your Order</DialogTitle>
+            <DialogDescription className="text-slate-400 text-sm mt-1">
+              Enter your details to proceed securely with Paystack
+            </DialogDescription>
 
-            {/* Selected ticket summary */}
+            {/* Selected ticket pill */}
             {selectedTicket && (
-              <div className="mt-4 bg-white/10 rounded-xl px-4 py-3 flex items-center justify-between">
-                <div>
-                  <p className="text-white font-semibold text-sm">{selectedTicket.name}</p>
+              <div className="mt-4 bg-white/10 rounded-xl px-4 py-3 flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-white font-semibold text-sm leading-tight truncate">{selectedTicket.name}</p>
                   <p className="text-slate-400 text-xs mt-0.5">MEDFINTECH CONFERENCE 2026</p>
                 </div>
-                <span className="text-green-400 font-extrabold text-xl">{selectedTicket.price}</span>
+                <span className="text-green-400 font-extrabold text-lg whitespace-nowrap flex-shrink-0">{selectedTicket.price}</span>
               </div>
             )}
           </div>
 
           {/* Form */}
-          <form onSubmit={handlePayment} noValidate className="px-6 py-6 space-y-4">
+          <form onSubmit={handlePayment} noValidate className="px-6 py-5 space-y-4 bg-white">
             {/* Full Name */}
             <div className="space-y-1.5">
               <Label htmlFor="pay-name" className="text-sm font-medium text-slate-700">
                 Full Name <span className="text-red-500">*</span>
               </Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                 <Input
                   id="pay-name"
                   type="text"
                   placeholder="e.g. Adewale Okonkwo"
                   value={form.name}
                   onChange={(e) => { setForm(f => ({ ...f, name: e.target.value })); setErrors(er => ({ ...er, name: '' })); }}
-                  className={`pl-9 ${errors.name ? 'border-red-400 focus-visible:ring-red-300' : ''}`}
+                  className={`pl-9 h-11 ${errors.name ? 'border-red-400 focus-visible:ring-red-300' : 'border-slate-200'}`}
                   disabled={isLoading}
+                  autoComplete="name"
                 />
               </div>
               {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
@@ -188,15 +183,16 @@ export default function Ticketing() {
                 Email Address <span className="text-red-500">*</span>
               </Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                 <Input
                   id="pay-email"
                   type="email"
                   placeholder="e.g. you@email.com"
                   value={form.email}
                   onChange={(e) => { setForm(f => ({ ...f, email: e.target.value })); setErrors(er => ({ ...er, email: '' })); }}
-                  className={`pl-9 ${errors.email ? 'border-red-400 focus-visible:ring-red-300' : ''}`}
+                  className={`pl-9 h-11 ${errors.email ? 'border-red-400 focus-visible:ring-red-300' : 'border-slate-200'}`}
                   disabled={isLoading}
+                  autoComplete="email"
                 />
               </div>
               {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
@@ -208,15 +204,16 @@ export default function Ticketing() {
                 Phone Number <span className="text-red-500">*</span>
               </Label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                 <Input
                   id="pay-phone"
                   type="tel"
                   placeholder="e.g. 08012345678"
                   value={form.phone}
                   onChange={(e) => { setForm(f => ({ ...f, phone: e.target.value })); setErrors(er => ({ ...er, phone: '' })); }}
-                  className={`pl-9 ${errors.phone ? 'border-red-400 focus-visible:ring-red-300' : ''}`}
+                  className={`pl-9 h-11 ${errors.phone ? 'border-red-400 focus-visible:ring-red-300' : 'border-slate-200'}`}
                   disabled={isLoading}
+                  autoComplete="tel"
                 />
               </div>
               {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
@@ -230,13 +227,16 @@ export default function Ticketing() {
             )}
 
             {/* Security note */}
-            <div className="flex items-center gap-2 bg-green-50 border border-green-100 rounded-lg px-3 py-2.5">
-              <ShieldCheck className="w-4 h-4 text-green-600 flex-shrink-0" />
-              <p className="text-xs text-green-700">Your payment is processed securely by Paystack. We never store your card details.</p>
+            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-xl px-3.5 py-3">
+              <ShieldCheck className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-green-700 leading-relaxed">Your payment is processed securely by Paystack. We never store your card details.</p>
             </div>
 
+            {/* Divider */}
+            <div className="border-t border-slate-100" />
+
             {/* Actions */}
-            <div className="flex gap-3 pt-1">
+            <div className="flex gap-3">
               <button
                 type="button"
                 onClick={() => setModalOpen(false)}
@@ -252,11 +252,11 @@ export default function Ticketing() {
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin" /> Redirecting...
+                    <Loader2 className="w-4 h-4 animate-spin" /> Redirecting to Paystack…
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-2">
-                    <img src={paystackLogo} alt="" className="w-4 h-4 object-contain" />
+                    <img src={paystackLogo} alt="" className="w-4 h-4 object-contain brightness-0 invert" />
                     Pay {selectedTicket?.price}
                   </span>
                 )}

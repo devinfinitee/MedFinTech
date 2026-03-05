@@ -60,7 +60,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data = await paystackRes.json();
 
     if (!paystackRes.ok || !data.status) {
-      console.error("Paystack init error", data);
       return res.status(502).json({ error: "Failed to initialize payment" });
     }
 
@@ -69,8 +68,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       authorization_url: data.data?.authorization_url,
       paystackResponse: data.data,
     });
-  } catch (error) {
-    console.error("Paystack API error", error);
+  } catch {
     return res.status(500).json({ error: "Internal server error" });
   }
 }

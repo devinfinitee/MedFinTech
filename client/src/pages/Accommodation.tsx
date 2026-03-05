@@ -108,8 +108,7 @@ export default function Accommodation() {
         redirectUrl: getSuccessUrl('accommodation', hotelId)
       });
       PaystackService.redirectToPayment(paymentResponse.paymentUrl);
-    } catch (error) {
-      console.error('Booking error:', error);
+    } catch {
       alert('Hotel booking failed. Please try again.');
     } finally {
       setIsLoading(null);

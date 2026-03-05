@@ -60,8 +60,7 @@ export default function Registration() {
       });
 
       PaystackService.redirectToPayment(paymentResponse.paymentUrl);
-    } catch (error) {
-      console.error('Registration error:', error);
+    } catch {
       alert('Registration failed. Please try again.');
     } finally {
       setIsLoading(false);

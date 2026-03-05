@@ -211,8 +211,7 @@ export default function PaymentSuccessTest() {
       link.download = `MEDFINTECH_Receipt_TEST.png`;
       link.href = dataUrl;
       link.click();
-    } catch (err) {
-      console.error('Image export error:', err);
+    } catch {
       alert('Could not save image. Please try again.');
     } finally {
       setIsSavingImg(false);

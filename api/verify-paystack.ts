@@ -33,7 +33,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data = await paystackRes.json();
 
     if (!paystackRes.ok || !data.status) {
-      console.error("Paystack verify error", data);
       return res.status(502).json({ error: "Failed to verify payment" });
     }
 
@@ -45,8 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       customer: data.data?.customer,
       metadata: data.data?.metadata,
     });
-  } catch (error) {
-    console.error("Paystack verify error", error);
+  } catch {
     return res.status(500).json({ error: "Internal server error" });
   }
 }

@@ -171,8 +171,7 @@ export default function PaymentSuccess() {
     try {
       const verification = await PaystackService.verifyPayment(reference);
       setPaymentDetails({ ...verification, type, item, reference });
-    } catch (error) {
-      console.error('Payment verification error:', error);
+    } catch {
       setPaymentDetails({ type, item, reference, verified: false });
     } finally {
       setIsVerifying(false);
@@ -218,8 +217,7 @@ export default function PaymentSuccess() {
       link.download = `MEDFINTECH_Receipt_${paymentDetails?.reference || 'payment'}.png`;
       link.href = dataUrl;
       link.click();
-    } catch (err) {
-      console.error('Image export error:', err);
+    } catch {
       alert('Could not save image. Please try again.');
     } finally {
       setIsSavingImg(false);

@@ -53,7 +53,6 @@ export class PaystackService {
         paystackResponse: data.paystackResponse,
       };
     } catch (error) {
-      console.error('Paystack initialization error:', error);
       throw error;
     }
   }
@@ -70,7 +69,6 @@ export class PaystackService {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Paystack verification error:', error);
       throw error;
     }
   }

@@ -81,7 +81,6 @@ export default function PassportPayment() {
         // Redirect user to Paystack hosted payment page
         window.location.href = authorizationUrl;
       } catch (error) {
-        console.error("Paystack init error", error);
         setIsPaying(false);
         toast({
           title: "Payment Error",

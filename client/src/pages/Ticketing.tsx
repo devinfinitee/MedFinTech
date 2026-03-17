@@ -134,9 +134,9 @@ export default function Ticketing() {
 
       {/* ── Payment Details Modal ─────────────────────────────────────── */}
       <Dialog open={modalOpen} onOpenChange={(open) => { if (!isLoading) setModalOpen(open); }}>
-        <DialogContent className="sm:max-w-[440px] w-[calc(100%-2rem)] p-0 overflow-hidden rounded-2xl max-h-[90vh] overflow-y-auto gap-0 [&>button]:text-white [&>button]:top-4 [&>button]:right-4 [&>button:hover]:bg-white/10">
+        <DialogContent className="sm:max-w-[440px] w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] p-0 overflow-hidden rounded-2xl max-h-[92dvh] overflow-y-auto gap-0 [&>button]:text-white [&>button]:top-3 [&>button]:right-3 sm:[&>button]:top-4 sm:[&>button]:right-4 [&>button:hover]:bg-white/10">
           {/* Header */}
-          <div className="bg-slate-900 px-6 pt-5 pb-5">
+          <div className="bg-slate-900 px-4 sm:px-6 pt-5 pb-5">
             <DialogTitle className="text-white font-bold text-lg leading-tight pr-6">Complete Your Order</DialogTitle>
             <DialogDescription className="text-slate-400 text-sm mt-1">
               Enter your details to proceed securely with Paystack
@@ -144,7 +144,7 @@ export default function Ticketing() {
 
             {/* Selected ticket pill */}
             {selectedTicket && (
-              <div className="mt-4 bg-white/10 rounded-xl px-4 py-3 flex items-center justify-between gap-4">
+              <div className="mt-4 bg-white/10 rounded-xl px-3 sm:px-4 py-3 flex items-center justify-between gap-3 sm:gap-4">
                 <div className="min-w-0">
                   <p className="text-white font-semibold text-sm leading-tight truncate">{selectedTicket.name}</p>
                   <p className="text-slate-400 text-xs mt-0.5">MEDFINTECH CONFERENCE 2026</p>
@@ -155,7 +155,7 @@ export default function Ticketing() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handlePayment} noValidate className="px-6 py-5 space-y-4 bg-white">
+          <form onSubmit={handlePayment} noValidate className="px-4 sm:px-6 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] space-y-4 bg-white">
             {/* Full Name */}
             <div className="space-y-1.5">
               <Label htmlFor="pay-name" className="text-sm font-medium text-slate-700">
@@ -236,19 +236,19 @@ export default function Ticketing() {
             <div className="border-t border-slate-100" />
 
             {/* Actions */}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
                 onClick={() => setModalOpen(false)}
                 disabled={isLoading}
-                className="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50"
+                className="w-full sm:flex-1 rounded-xl border border-slate-200 py-3.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 group relative overflow-hidden rounded-xl bg-gradient-to-r from-primary via-green-500 to-primary bg-[length:200%_100%] py-3 text-white font-bold text-sm shadow-md hover:shadow-primary/40 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
+                className="w-full sm:flex-1 group relative overflow-hidden rounded-xl bg-gradient-to-r from-primary via-green-500 to-primary bg-[length:200%_100%] py-3.5 text-white font-bold text-sm shadow-md hover:shadow-primary/40 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">
